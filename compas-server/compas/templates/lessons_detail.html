@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{lesson.title}}</title>
+</head>
+<body>
+{% load dict_extras %}
+<a href="{% url 'lessons' %}">обратно к списку уроков</a>
+<h1>{{ lesson.title }}</h1>
+
+<p>{{ lesson.description }}</p>
+
+{% if lesson.video_url %}
+<iframe
+    src="{{ lesson.video_url }}"
+    width="1280"
+    height="720"
+    allow="autoplay;
+    encrypted-media;
+    fullscreen;
+    picture-in-picture;
+    screen-wake-lock;"
+    frameborder="0"
+    allowfullscreen>
+</iframe>
+{% else %}
+<p>К этому уроку пока нет видео :(</p>
+{% endif %}
+
+{% if questions %}
+<h1>проверка знаний</h1>
+<div id="quiz">
+    {% for question in questions %}
+        <div class="question" data-question-id="{{ question.id }}">{{ question.question_text }}<br>
+        {% for answer in question.questionanswers_set.all %}
+        <label>
+            <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+            {{ answer.answer_text }}
+        </label><br>
+        {% endfor %}
+    <div class="result"></div></div>
+    {% endfor %}
+    <button type="button" id="chk-btn"> Проверить ответы</button>
+    <div id="final-res"></div>
+</div>
+{% endif %}
+
+<!--{% if results %}-->
+<!--<h1>Результаты:</h1>-->
+<!--{% for question in questions %}-->
+<!--    {% with result=results|get_item:question.id %}-->
+<!--        <p>вопрос: {{ question.question_text }}</p>-->
+<!--        <p>ваш ответ: {{ result.selected_answer }}</p>-->
+<!--        {% if result.correct %}-->
+<!--            <p>верно!</p>-->
+<!--        {% else %}-->
+<!--            <p>неверно :(</p>-->
+<!--        {% endif %}-->
+<!--    {% endwith %}-->
+<!--{% endfor %}-->
+<!--{% endif %}-->
+
+
+
+</body>
+</html>
+
+<script>
+document.getElementById('chk-btn').addEventListener('click', function() {
+    const formData = new FormData();
+
+    document.querySelectorAll('#quiz input[type = "radio"]:checked').forEach(radio => {
+        formData.append(radio.name, radio.value)
+    })
+
+    fetch('', {
+        method: 'POST',
+        headers:{
+            'X-CSRFToken': '{{ csrf_token }}',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(results => {
+        let correctCount = 0;
+        let totalCount = 0;
+
+        for(const [questionId, result] of Object.entries(results)){
+            const resultDiv = document.querySelector(`.question[data-question-id="${questionId}"] .result`);
+            totalCount++;
+            if(result.is_correct){
+                resultDiv.innerHTML = "Верно!";
+                correctCount++;
+                }
+            else{
+                resultDiv.innerHTML = `Неверно :(..... Выбрано: ${result.selected_answer || "ничего"}`
+                }
+            }
+
+        document.getElementById('final-res').innerHTML = `<h3>Ваш результат: ${correctCount} из ${totalCount}<h3>`
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка. Подробности в консоли (F12).');
+    });
+    });
+</script>

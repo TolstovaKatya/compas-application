@@ -1,0 +1,19 @@
+# --- Python / Django  ---
+compas-server/venv/
+compas-server/**/*.pyc
+compas-server/__pycache__/
+compas-server/db.sqlite3
+compas-server/.env
+compas-server/media/
+
+# --- Node / Vue  ---
+compas-client/front/node_modules/
+compas-client/front/dist/
+compas-client/front/.env
+compas-client/front/.env.local
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+.DS_Store

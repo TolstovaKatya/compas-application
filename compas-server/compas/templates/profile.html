@@ -1,0 +1,23 @@
+<head>
+    <title>пользоваетль</title>
+
+</head>
+
+<div class="container">
+    <div id="main">
+
+        <strong>{{ user.username }}</strong>
+
+        <h3>Здравствуйте, {{ user.first_name }} {{ user.last_name }}!</h3>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">
+                выйти
+            </a><br>
+            <a href="{% url 'lessons'%}">
+                к списку уроков
+            </a>
+        {% endif %}
+
+    </div><!-- /.main -->
+</div><!-- /.container -->
