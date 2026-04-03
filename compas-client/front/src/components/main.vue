@@ -87,7 +87,7 @@
                     class="carousel-img"
                     :src="img3"
                     >
-                    <div class="carousel-caption-bottom">Модель самолета АН-2</div>
+                    <div class="carousel-caption-bottom">Модель самолета  АН-2 </div>
                 </div>
             </n-carousel>
 
