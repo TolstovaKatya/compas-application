@@ -56,7 +56,42 @@
                 <span class="blue-text">Время творить!</span>
             </div>
 
-            <div class="carousel-container">
+
+            <n-carousel autoplay>
+                <div class="carousel-slide column">
+                    <img
+                    class="carousel-img"
+                    :src="img"
+                    >
+                    <div class="carousel-caption-bottom">Модель робота</div>
+                </div>
+
+                <div class="carousel-slide column">
+                    <img
+                    class="carousel-img"
+                    :src="img1"
+                    >
+                    <div class="carousel-caption-bottom">Модель советского тяжёлого штурмового танка КВ-2</div>
+                </div>
+
+                <div class="carousel-slide column">
+                    <img
+                    class="carousel-img"
+                    :src="img2"
+                    >
+                    <div class="carousel-caption-bottom">Модель автомобиля ЗИС-5В</div>
+                </div>
+
+                <div class="carousel-slide column">
+                    <img
+                    class="carousel-img"
+                    :src="img3"
+                    >
+                    <div class="carousel-caption-bottom">Модель самолета АН-2</div>
+                </div>
+            </n-carousel>
+
+            <!-- <div class="carousel-container">
                 <div class="carousel">
                     <button class="carousel-btn-prev" @click="prevSlide" :disabled="currentIndex === 0">
                         <img src="../assets/images/prevButton.png" alt="">
@@ -79,7 +114,7 @@
                         <img src="../assets/images/nextButton.png" alt="">
                     </button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>  
 
@@ -121,8 +156,8 @@
 
     <div class="fourth-block">
         <div class="title">
-            <span class="white-text">
-                ТРЕХМЕРНЫЕ
+            <span class="white-text-fourth">
+                ТРЕХМЕРНЫЕ<br>
                 МОДЕЛИ,
             </span>
             <span class="white-text">
@@ -135,10 +170,61 @@
                 СДЕЛАТЬ
             </span>
         </div>
-    </div>
+
+        <div class="fourth-block-content">
+            <div class="fourth-block-first-card">
+                <n-card 
+                hoverable
+                style="display: flex; flex-direction: column; align-items: center;"
+                >
+                    <n-image
+                        :src="img"
+                        style="margin: 0 auto; display: block;"
+                    />
+
+                    <span style="text-align: left; margin-bottom: 2%;">МОДЕЛЬ МАШИНЫ</span>
+
+                    <n-button 
+                        round 
+                        color="#FFFFFF" 
+                        text-color="#1D1D1B"
+                        style="margin-top: 1vh; width: 100%; margin-bottom: 10px;">
+                        Посмотреть
+                    </n-button>
+                </n-card>
+            </div>
+            <div class="fourth-block-second-card">
+                <n-card 
+                hoverable
+                style="display: flex; flex-direction: column; align-items: center;"
+                >
+                    <n-image
+                        :src="img"
+                        style="margin: 0 auto; display: block;"
+                    />
+
+                    <span style="text-align: left; margin-bottom: 2%;">МОДЕЛЬ МАШИНЫ</span>
+
+                    <n-button 
+                        round 
+                        color="#FFFFFF" 
+                        text-color="#1D1D1B"
+                        style="margin-top: 1vh; width: 100%; margin-bottom: 10px;">
+                        Посмотреть
+                    </n-button>
+                </n-card>
+            </div>
+        </div>
+    </div> 
 </template>
 
 <script setup>
+import {
+    NCard,
+    NImage,
+    NButton,
+    NCarousel
+} from 'naive-ui'
 import { ref, computed } from 'vue'
 import img from '../assets/images/roobot.gif'
 import img1 from '../assets/images/tank.png'
@@ -228,7 +314,7 @@ const nextSlide = () => {
     max-width: 594px;
     text-align: left;
     margin-left: 174px;
-    margin: 81px 133px 0px 0px;
+    margin: 0px 133px 0px 0px;
     font-size: 24px;
 }
 
@@ -247,7 +333,7 @@ const nextSlide = () => {
     max-width: 989px;
     font-size: 24px;
     text-align: center;
-    margin: 56px auto 106px auto;
+    margin: 56px auto 56px auto;
 }
 
 .carousel-container {
@@ -258,6 +344,25 @@ const nextSlide = () => {
 .carousel {
     position: relative;
     overflow: hidden;
+}
+
+.n-carousel {
+    width: 70vw;
+    margin: 0 auto 0 auto;
+    padding: 0 0 5vh 0;
+}
+
+.carousel-caption-bottom {
+  color: #ffffff;
+  text-align: center;
+  font-size: 13px;
+}
+
+.carousel-img {
+  width: auto;
+  height: 240px;
+  object-fit: cover;
+  margin: 0 auto 0vh auto;
 }
 
 .carousel-viewport {
@@ -281,7 +386,7 @@ const nextSlide = () => {
     transition: transform 0.4s ease;
 }
 
-.carousel-slide {
+/* .carousel-slide {
     min-width: calc(100% / 3);
     box-sizing: border-box;
     padding-top: 8px;
@@ -297,7 +402,7 @@ const nextSlide = () => {
     object-fit: cover;
     display: block;
     margin: auto;
-}
+} */
 
 .slide-title {
     display: block;
@@ -341,6 +446,7 @@ const nextSlide = () => {
     position: relative;
     display: flex;
     justify-content: center;
+    min-height: 450px;
 }
 
 .center-text {
@@ -351,6 +457,12 @@ const nextSlide = () => {
     color: white;
     margin-top: 44px;
     text-transform: uppercase;
+}
+
+.carousel-slide.column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .third-left {
@@ -392,5 +504,29 @@ const nextSlide = () => {
     white-space: pre-line;
     font-size: 24px;
     margin-top: 32px;
+}
+
+.fourth-block {
+    position: relative;
+    justify-content: center;
+}
+
+.white-text-fourth {
+    font-size: 24px;
+    color: white;
+    white-space: pre-wrap;
+}
+
+.n-card {
+    margin: 10vh 4vw 10vh 4vw;
+    width: 33vw;
+    background-color: black;
+    color: white;
+
+}
+
+.fourth-block-content {
+    display: flex;
+    justify-content: center;
 }
 </style>
