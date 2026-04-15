@@ -16,7 +16,7 @@
         <div style="left: 374px; top: 152px; position: absolute"><span style="color: #00B1FF; font-size: 48px; font-family: Arimo; font-weight: 400; text-transform: uppercase; word-wrap: break-word">легче,</span><span style="color: white; font-size: 48px; font-family: Arimo; font-weight: 400; text-transform: uppercase; word-wrap: break-word"> чем ты думаешь</span></div>
     </div>
 
-    <div class="first-block">
+    <div class="first-block" id="first-block">
         <div class="title">
             <span class="white-text">что такое</span>
             <span class="blue-text">компас 3d?</span>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="second-block">
+    <div class="second-block" id="second-block">
         <div class="title">
             <span class="white-text">чему я</span>
             <span class="blue-text">научусь?</span>
@@ -118,7 +118,7 @@
         </div>
     </div>  
 
-    <div class="third-block">
+    <div class="third-block" id="third-block">
         <div class="title">
             <span class="white-text">из чего состоит</span>
             <span class="blue-text">курс?</span>

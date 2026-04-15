@@ -49,7 +49,7 @@ onMounted(() => {
 .n-card, .custom-card {
   width: 70vw;
   background-color: black !important;
-  color: white !important;
+  color: black !important;
   border: 1px solid #00B1FF !important;
 
   --n-header-text-color: white !important; 

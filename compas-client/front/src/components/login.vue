@@ -88,8 +88,10 @@ const handleSubmit = async () => {
   error.value = null;
   try {
     const data = await authClient.login(formData.value);
+    console.log(data.user)
     if (data.token) {
       localStorage.setItem('access_token', data.token);
+      localStorage.setItem('username', data.user.username)
       window.location.href = '/profile'; 
     }
   } catch (err) {
