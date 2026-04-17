@@ -84,6 +84,31 @@ const menuOptions = computed(() => {
         label: () => h(
           "a",
           {
+            href: "/lessons",
+            style: {
+              color: COLOR_NORMAL,
+              textDecoration: 'none',
+              display: 'block',
+              width: '100%',
+              height: '100%',
+              transition: 'color 0.3s'
+            },
+            onMouseover: (e) => {
+              e.target.style.color = COLOR_HOVER;
+              
+            },
+            onMouseout: (e) => {
+              e.target.style.color = COLOR_NORMAL;
+            }
+          },
+          "К СПИСКУ УРОКОВ"
+        ),
+        key: "main-page",
+      },
+      {
+        label: () => h(
+          "a",
+          {
             href: "/profile",
             style: {
               color: COLOR_HOVER,
@@ -259,15 +284,14 @@ body {
 .custom-menu.n-menu {
   position: fixed !important;
   top: 0 !important;
-  left: 0 !important;
   width: 100% !important;
   height: 10vh !important;  
-  background-color: #000000 !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
   z-index: 1000 !important;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
   border: 1px solid !important;
   padding: 0 !important;
-  margin-left: calc((100% / 4) * 0,2);
+  margin: 0 auto 0 auto !important;
 }
 
 .custom-menu.n-menu .n-menu__content {
@@ -277,14 +301,15 @@ body {
   height: 100% !important;
   width: 100% !important;
   padding: 0 !important;
-  margin-left: 50px !important ;
+  margin: 0 auto 0 auto !important ;
 }
 
 .custom-menu.n-menu .n-menu-item {
-  flex:  auto !important;  
+  flex: auto !important;  
   height: 100% !important;
   display: flex !important;
   align-items: center !important;
+  justify-content: center !important;
   margin: 0 0 !important;
   padding: auto !important;
 }

@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Main from "@/components/main.vue";
 import Login from "@/components/login.vue";
 import Profile from "@/components/profile.vue";
-import registration from "@/components/registration.vue";
 import Registration from "@/components/registration.vue";
+import Lessonslist from "@/components/lessons_list.vue";
+import LessonDetail from "@/components/lesson_detail.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_API),
@@ -27,6 +28,16 @@ const router = createRouter({
             path: '/registration',
             name: 'Registration',
             component: Registration
+        },
+        {
+            path: '/lessons',
+            name: 'Lessonslist',
+            component: Lessonslist
+        },
+        {
+            path: '/lessons/:id',
+            name: 'LessonDetail',
+            component: LessonDetail
         }
     ]
 })

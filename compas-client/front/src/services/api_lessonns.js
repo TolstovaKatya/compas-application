@@ -1,14 +1,25 @@
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API
 
-const createClient = () => {
+const createLessonsClient = () => {
     const client = axios.create({
-        baseURL: API_URL,
-        'Content-Type': 'application/json'
+        baseURL: 'http://127.0.0.1:8000/',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
+
+    client.interceptors.request.use((config) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            config.headers.Authorization = `Token ${token}`;
+        }
+        return config;
+    });
+
     return {
         async lessonDetail(lessonId) {
-            const response = await client.get(`api/lessons/${lessonId}`)
+            const response = await client.get(`api/lessons/${lessonId}/`)
 
             return response.data;
         }, 
@@ -20,12 +31,12 @@ const createClient = () => {
         },
 
         async getAllLessons() {
-            const response = await client.get('lessons/')
+            const response = await client.get('api/lessons/')
 
             return response.data
         }
     }
 }
 
-export default createClient();
+export default createLessonsClient;
 
