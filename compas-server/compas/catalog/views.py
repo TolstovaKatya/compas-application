@@ -13,7 +13,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Lessons, Quizzes, QuizzQuestions, QuestionAnswers
-from .serializaters import LessonDetailSerializer, CheckAnswerSerializer
+from .serializaters import LessonDetailSerializer, CheckAnswerSerializer, LessonSerializer
+from rest_framework.decorators import api_view
+
 
 
 @login_required
@@ -59,11 +61,14 @@ def user_logout(request):
     logout(request)
     return redirect('/login')
 
+@api_view(['GET'])
 def lessons_list(request):
     lessons = Lessons.objects.all().order_by('id') #взять все
-    return render(request,'lessons_list.html', {
-        'lessons':lessons,
-    })
+    serializer = LessonSerializer(lessons, many=True)
+    # return render(request,'lessons_list.html', {
+    #     'lessons':lessons,
+    # })
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 class LessonDetailView(APIView):
     # lesson = get_object_or_404(Lessons,id=lesson_id)

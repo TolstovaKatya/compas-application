@@ -31,7 +31,7 @@ User = get_user_model()
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lessons
-        fields = [ 'id', 'title', 'description']
+        fields = [ 'id', 'title']
 
 
 class QuestionAnswersSerializer(serializers.ModelSerializer):
