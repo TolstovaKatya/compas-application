@@ -24,10 +24,16 @@ const createLessonsClient = () => {
             return response.data;
         }, 
 
-        async checkAnswers(lessonId, answers) {
-            const response = await client.post(`api/lessons/${lessonId}`, answers)
+        async getTest(lessonId) {
+            const response = await client.get(`api/lessons/${lessonId}/test/single`)
 
-            return response.data;
+            return response.data
+        },
+
+        async checkAnswer(lessonId, answers) {
+            const response = await client.post(`api/lessons/${lessonId}/test/single`, { answers: answers })
+
+            return response.data
         },
 
         async getAllLessons() {

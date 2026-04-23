@@ -31,6 +31,12 @@
                         </iframe>
                     </div>
                 </div>
+
+                <n-button class="btn">
+                    <router-link :to="`/lessons/${lesson.id}/test`" class="back-button">
+                        Перейти к тесту
+                    </router-link>
+                </n-button>
             </div>
         </n-card>
     </n-config-provider>

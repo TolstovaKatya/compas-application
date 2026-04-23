@@ -5,6 +5,7 @@ import Profile from "@/components/profile.vue";
 import Registration from "@/components/registration.vue";
 import Lessonslist from "@/components/lessons_list.vue";
 import LessonDetail from "@/components/lesson_detail.vue";
+import Test from '@/components/test.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_API),
@@ -38,6 +39,11 @@ const router = createRouter({
             path: '/lessons/:id',
             name: 'LessonDetail',
             component: LessonDetail
+        },
+        {
+            path: '/lessons/:id/test',
+            name: 'Test',
+            component: Test
         }
     ]
 })
