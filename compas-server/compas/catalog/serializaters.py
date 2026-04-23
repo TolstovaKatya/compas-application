@@ -4,58 +4,54 @@ from .models import Users, Lessons, Quizzes, QuizzQuestions, QuestionAnswers, An
 
 User = get_user_model()
 
-# class UserRegistrationSerializer(serializers.ModelSerializer):
-#     password = serializers.CharField(write_only=True, min_length=8, max_length=64)
-#     password2 = serializers.CharField(write_only=True, min_length=8, max_length=64)
-#
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'name', 'lastname', 'password', 'password2']
-#
-#     def validate(self, data):
-#         if data['password'] != data['password2']:
-#             raise serializers.ValidationError('Passwords must match.')
-#
-#         return data
-#
-#     def create(self, validated_data):
-#         validated_data.pop('password2')
-#         user = User.objects.create(**validated_data)
-#         return user
-#
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         fields = ['username', 'email', 'name', 'lastname']
-
-
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lessons
         fields = [ 'id', 'title']
 
-
+#отображение ответов
 class QuestionAnswersSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionAnswers
         fields = [ 'id', 'answer_text']
 
+#отображение вопросов с ответами
 class QuestionSerializer(serializers.ModelSerializer):
-    answers = QuestionAnswersSerializer(many=True, read_only=True)
+    answers = QuestionAnswersSerializer(many=True, read_only=True, source='questionanswers_set')
 
     class Meta:
         model = QuizzQuestions
         fields = [ 'id', 'question_text', 'answers']
 
+#отображение теста с вопросами и ответами
+class QuizzesSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True, source='quizzquestions_set')
+
+    class Meta:
+        model = Quizzes
+        fields = [ 'id', 'title', 'questions']
+
 class LessonDetailSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True, read_only=True)
+    questions = serializers.SerializerMethodField()
 
     class Meta:
         model = Lessons
         fields = [ 'id', 'title', 'description', 'video_url', 'questions']
 
+    def get_questions(self, obj):
+        test = Quizzes.objects.filter(id_lesson=obj.id).first()
+        if test:
+            return QuizzesSerializer(test).data
+        else:
+            return None
 
-class CheckAnswerSerializer(serializers.ModelSerializer):
-    answers = serializers.DictField(read_only=True)
+#ответы пользователя
+class UserAnswersSerializer(serializers.Serializer):
+    question_id = serializers.IntegerField()
+    answer_id = serializers.IntegerField()
+
+class CheckAnswerSerializer(serializers.Serializer):
+    answers = serializers.ListField(child=UserAnswersSerializer())
 
     def validate_answers(self, data):
         if not data:
