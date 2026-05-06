@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+from ckeditor_demo.settings import CKEDITOR_CONFIGS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'ckeditor',
     'catalog.apps.CatalogConfig',
     'rest_framework',
     'rest_framework.authtoken',
@@ -153,3 +156,37 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'RemoveFormat'],
+            ['NumberList', 'BulletedList', 'Blockquote'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Table', 'HorizontalRule'],
+            ['Source', '-', 'Styles', 'Format'],
+        ],
+        'extraPlugins': ','.join(['codesnippet']),
+        'height': 400,
+        'width': '100%',
+        'filebrowserUploadUrl': '/ckeditor/upload/',
+        'filebrowserBrowseUrl': '/ckeditor/browse/',
+    }
+}
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# 👇 MEDIA_ROOT должен быть строкой или Path (но не смешивать!)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 👈 Как строка
+# ИЛИ:
+# MEDIA_ROOT = BASE_DIR / 'media'  # 👈 Как Path (но тогда везде используйте /)
+
+MEDIA_URL = '/media/'
+
+# 👇 Разрешенные типы файлов
+CKEDITOR_UPLOAD_PATH = 'ckeditor/'
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
