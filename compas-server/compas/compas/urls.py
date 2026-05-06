@@ -22,6 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 import os
+import nested_admin
 
 @csrf_exempt
 def ckeditor_upload(request):
@@ -70,11 +71,6 @@ def ckeditor_upload(request):
         logger = logging.getLogger(__name__)
         logger.exception(f'Upload error: {str(e)}')
         return JsonResponse({'uploaded': False, 'error': {'message': str(e)}}, status=500)
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('', include('catalog.urls')),
-#     path('ckeditor/upload/', ckeditor_upload, name='ckeditor_upload'),
-# ]
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html")),
@@ -83,6 +79,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('ckeditor/upload/', ckeditor_upload, name='ckeditor_upload'),
+    path('nested-admin/', include('nested_admin.urls')),
 ]
 
 if settings.DEBUG:
