@@ -23,6 +23,8 @@ from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 import os
 import nested_admin
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+
 
 @csrf_exempt
 def ckeditor_upload(request):
@@ -75,11 +77,14 @@ def ckeditor_upload(request):
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html")),
     path("main/", TemplateView.as_view(template_name="main.html")),
-    path('', include('catalog.urls')),
+    path('', include('lessons.urls')),
     path('', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('ckeditor/upload/', ckeditor_upload, name='ckeditor_upload'),
     path('nested-admin/', include('nested_admin.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 if settings.DEBUG:

@@ -17,7 +17,7 @@ from ckeditor_demo.settings import CKEDITOR_CONFIGS
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-AUTH_USER_MODEL = 'catalog.Users'
+AUTH_USER_MODEL = 'lessons.Users'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -47,9 +47,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_spectacular',
 
     'accounts',
-    'catalog.apps.CatalogConfig',
+    'lessons.apps.LessonsConfig',
 ]
 
 MIDDLEWARE = [
@@ -152,12 +153,18 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 CKEDITOR_CONFIGS = {
@@ -183,13 +190,9 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 👇 MEDIA_ROOT должен быть строкой или Path (но не смешивать!)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 👈 Как строка
-# ИЛИ:
-# MEDIA_ROOT = BASE_DIR / 'media'  # 👈 Как Path (но тогда везде используйте /)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
-# 👇 Разрешенные типы файлов
 CKEDITOR_UPLOAD_PATH = 'ckeditor/'
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
