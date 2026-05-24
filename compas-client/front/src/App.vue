@@ -9,7 +9,7 @@ const username = ref('')
 const isMenu = ref(true)
 const lastScrollY = ref(0)
 
-const isAutentificated = ref(!!localStorage.getItem('access_token'))
+const isAutentificated = computed(() => !!localStorage.getItem('access_token'))
 
 const handleScroll = () => {
   const currentScrollY = window.scrollY

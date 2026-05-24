@@ -4,13 +4,13 @@
 
         <div v-if="testComplited">
             <n-card class="test-card">
-                Тест пройден! Поздравляем!
+                <p class="test-title">Тест пройден! Поздравляем!</p>
                 <div class="test-card-res">
                     <span>Ваши результаты:</span>
-                    <n-progress type="circle" :percentage="resultValue" :offset-degree="120" class="result"/>
+                    <n-progress type="circle" :percentage="resultValue" :offset-degree="100" class="result"/>
                 </div>
 
-                <n-button class="btn">
+                <n-button class="btn" type="primary">
                     <router-link :to="`/lessons/${lessonId}`" class="back-button">
                         Назад к уроку
                     </router-link>
@@ -19,188 +19,222 @@
         </div>
 
         <div v-else>
-            <n-card
-                class="test-card"
-            >
-                <div 
-                    v-for="question in questions"
-                    :key="question.id"
-                >
-                    <div
-                        v-show="question.id === questionId"
-                        class="question"
+            <div v-if="questions && questions.length > 0">
+                <n-card class="test-card">
+                    <div 
+                        v-for="question in questions"
+                        :key="question.id"
                     >
-                        {{ question.question_text }}
+                        <div
+                            v-show="question.id === questionId"
+                            class="question"
+                        >
+                            {{ question.question_text }}
+                        </div>
+
+                        <!--ответы--->
+                        <div>
+                            <n-card
+                                v-for="answer in currentAnswers"
+                                v-show="question.id === questionId"
+                                @click="checkAnswer(answer.id)"
+                                class="mini-card"
+                            >
+                                {{ answer.answer_text }}
+                            </n-card>
+                        </div>  
                     </div>
 
-                    <!--ответы--->
-                    <n-card
-                        v-for="answer in currentAnswers"
-                        v-show="question.id === questionId"
-                        @click="checkAnswer(answer.id)"
-                        class="mini-card"
-                    >
-                        {{ answer.answer_text }}
-                    </n-card>
-                </div>
-                <n-alert v-show="ifMistake" title="Ошибка" type="error" closable class="mistake">
-                    Давай подумаем еще :)
-                </n-alert>
-            </n-card>
+                    <n-alert v-show="sucsess" title="Отличный результат!" type="success" closable class="mistake">
+                        Молодец! Переходим к следующему вопросу!
+                    </n-alert>
+                    
+                    <n-alert v-show="ifMistake" title="Ошибка" type="error" closable class="mistake">
+                        Давай подумаем еще :)
+                    </n-alert>
+                </n-card>
+            </div>
+
+            <div v-else-if="questions !== undefined">
+                <n-card class="test-card">
+                    <p class="test-title">К этому уроку нет теста :)</p> <br><br>
+                    <n-button class="btn" type="primary">
+                        <router-link :to="`/lessons/${lessonId}`" class="back-button">
+                            Назад к уроку
+                        </router-link>
+                    </n-button>
+                </n-card>
+            </div>
+            
+            <div v-else>
+                <!-- Загрузка -->
+                <n-card class="test-card">Загрузка...</n-card>
+            </div>
         </div>
     </n-config-provider>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { NCard, NAlert, NConfigProvider, NProgress } from 'naive-ui';
+import { useRoute } from 'vue-router';
+import { NCard, NAlert, NConfigProvider, NProgress, NButton } from 'naive-ui';
 import createLessonsClient from '@/services/api_lessonns';
 
 const client = createLessonsClient();
 const route = useRoute();
 
-const questionId = ref()
-const question_text = ref('')
-const question = ref()
+const themeOverrides = {
+    common: {
+        primaryColor: '#00B1FF',
+    },
+    Button: {
+        textColor: '#ffffff',
+        colorPrimary: 'none',
+        colorHoverPrimary: 'none',
+        borderPrimary: '#00B1FF 1px solid',
+        borderHoverPrimary: '#00B1FF 1px solid',
+        borderPressedPrimary: '#00B1FF 1px solid',
+        borderFocusPrimary: '#00B1FF 1px solid',
+        backgroundColorPrimary: 'none'
+    }
+}
 
-const questions = ref()
-const answers = ref({})
-const answers1 = ref({})
-
-const selectedAnswerId = ref()
-
+const questionId = ref(null)
+const questions = ref(null)
+const selectedAnswerId = ref(null)
 const tryCount = ref(0)
-
-const lessonId = route.params.id;
+const lessonId = route.params.id
 
 const ifMistake = ref(false)
+const sucsess = ref(false)
 const testComplited = ref(false)
-const titleTest = ref()
+const titleTest = ref('')
 
 const correctCount = ref(0)
 const wrongAttempts = ref(0)
 
 const resultValue = computed(() => {
-    const res = correctCount.value - wrongAttempts.value * 0.1
-    const percent = (res / questions.value.length) * 100
-
-    return Math.round(percent * 10) / 10;
+    if (!questions.value || questions.value.length === 0) return 0;
+    const res = correctCount.value - wrongAttempts.value * 0.1;
+    const percent = (res / questions.value.length) * 100;
+    return Math.max(0, Math.round(percent * 10) / 10);
 });
 
-
 const currentAnswers = computed(() => {
+    if (!questions.value || !questionId.value) return [];
     const currentQuestion = questions.value.find(item => item.id === questionId.value);
-    if (currentQuestion.answers) {
+    if (currentQuestion?.answers) {
         return currentQuestion.answers.map(ans => ({
             answer_text: ans.answer_text,
             id: ans.id
         }));
     }
+    return [];
 });
 
 const getQuestions = async() => {
-    const response = await client.getTest(lessonId);
+    try {
+        const response = await client.getTest(lessonId);
+        
+        if (!response || !response.questions) {
+            questions.value = [];
+            return;
+        }
 
-    titleTest.value = response.title
+        titleTest.value = response.title || 'Тест';
+        questions.value = response.questions;
 
-    //id вопроса
-    questionId.value = response.questions[0].id
-    console.log(0, questionId.value)
-
-    //массив вопросов
-    questions.value = response.questions
-    console.log(1, response.questions);
-    console.log(2, response.questions[questionId.value])
-
-    // конкретный вопрос (для отладки)
-    question.value = response.questions.find(item => item.id = questionId.value);
-
-    // текст конкретного вопроса (для отладки)
-    question_text.value = question.value.question_text
-    console.log(3, question_text.value)
-
-    //ответы на вопрос 
-    answers.value = response.questions.find(item => item.id === questionId.value).answers
-    console.log(answers.value)
-
-    answers1.value = answers.value.map(ans => ({
-        answer_text: ans.answer_text,
-        id: ans.id
-    }))
-    console.log(answers1.value)
+        if (questions.value.length > 0) {
+            questionId.value = questions.value[0].id;
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки теста:', error);
+        questions.value = [];
+    }
 }
 
+const goToNextQuestion = () => {
+    if (!questions.value) return;
+    
+    const currentIndex = questions.value.findIndex(q => q.id === questionId.value);
+
+    if (currentIndex >= questions.value.length - 1) {
+        testComplited.value = true;
+    } else {
+        questionId.value = questions.value[currentIndex + 1].id;
+        tryCount.value = 0; // сброс попыток для нового вопроса
+    }
+}
 
 const checkAnswer = async(id) => {
-    selectedAnswerId.value = id
+    if (!questions.value) return;
 
-    const answerss = [
-        {
-            "question_id": questionId.value,
-            "answer_id": id
+    selectedAnswerId.value = id;
+    const answerss = [{ "question_id": questionId.value, "answer_id": id }];
+
+    // определяем, последний ли это вопрос
+    const currentIndex = questions.value.findIndex(q => q.id === questionId.value);
+    const isLastQuestion = currentIndex === questions.value.length - 1;
+
+    try {
+        // отправляем текущие счетчики ДО их обновления в этом запросе
+        const response = await client.checkAnswer(
+            lessonId,
+            answerss,
+            isLastQuestion,
+            correctCount.value,
+            wrongAttempts.value
+        );
+
+        // парсим ответ сервера. Ключ может быть строкой или числом
+        const questionKey = String(questionId.value);
+        const questionResult = response[questionKey] || response[questionId.value];
+        
+        const isCorrect = questionResult?.is_correct || response.is_correct || false;
+
+        if (!isCorrect) {
+            ifMistake.value = true;
+            wrongAttempts.value += 1;
+            tryCount.value += 1;
+
+            setTimeout(() => { ifMistake.value = false }, 2000);
+
+            if (tryCount.value >= 3) {
+                alert("К сожалению, попытки закончились :(");
+                goToNextQuestion();
+            }
+        } else {
+            sucsess.value = true;
+            correctCount.value += 1;
+
+            setTimeout(() => {
+                sucsess.value = false;
+                goToNextQuestion();
+            }, 2000);
         }
-    ]
-
-    const response = await client.checkAnswer(lessonId, answerss)
-    console.log(response[questionId.value].is_correct)
-
-    const goToNextQuestion = () => {
-        if (questionId.value >= questions.value.length) {
-            testComplited.value = true
-        }
-        else {
-            questionId.value ++
-        }
-    }
-
-    if (!response[questionId.value].is_correct) {
-
-        ifMistake.value = true
-
-        setTimeout(() => {
-            ifMistake.value = false
-        }, 2000)
-
-        wrongAttempts.value += 1
-        tryCount.value += 1
-        console.log(tryCount.value)
-
-        if (tryCount.value === 3){
-            alert("К сожалению попытки закончились :(")
-            //questionId.value += 1;
-            goToNextQuestion()
-            ifMistake.value = false
-        }
-    }
-    else {
-        alert("Молодец! Переходим к следующему вопросу!")
-        // questionId.value ++
-        goToNextQuestion()
-        tryCount.value = 0
-        correctCount.value += 1
+    } catch (error) {
+        console.error('Ошибка проверки ответа:', error);
+        alert('Произошла ошибка при проверке ответа');
     }
 }
-
-
 
 onMounted(() => {
     getQuestions();
 })
-
 </script>
 
-<style>
+<style scoped>
 .test-card {
     margin: auto;
     margin-top: 8vh;
     background-color: black !important;
     color: white !important;
+    width: 80%;
 }
 
 .mini-card {
     width: 80%;
-    height: 20%;
+    min-height: 50px;
     margin: auto;
     margin-top: 1vh;
     background-color: black !important;
@@ -252,4 +286,25 @@ h1 {
     margin-top: 5vh;
 }
 
+.btn {
+    width: 80% !important;
+    margin: 3vh auto 0 auto !important; 
+    display: block !important;
+}
+
+.back-button {
+    text-decoration: none !important;
+    color: #00B1FF !important;
+    font-weight: bold !important;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+}
+
+.test-title {
+    text-align: center;
+    margin: auto;
+    font-size: 2em;
+}
 </style>

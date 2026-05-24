@@ -30,8 +30,13 @@ const createLessonsClient = () => {
             return response.data
         },
 
-        async checkAnswer(lessonId, answers) {
-            const response = await client.post(`api/lessons/${lessonId}/test/single`, { answers: answers })
+        async checkAnswer(lessonId, answers, isLastQuestion = false, correctCount = 0, wrongCount = 0) {
+            const response = await client.post(`api/lessons/${lessonId}/test/single`, {
+                answers: answers,
+                is_last: isLastQuestion,
+                correct_count: correctCount,
+                wrong_count: wrongCount
+            })
 
             return response.data
         },

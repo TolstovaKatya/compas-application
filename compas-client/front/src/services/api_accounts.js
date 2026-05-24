@@ -37,6 +37,11 @@ const createRegistrationClient = () => {
         async profile() {
             const response = await client.get('/api/accounts/profile');
             return response.data; 
+        },
+
+        async getQuizAttemts() {
+            const response = await client.get('/api/profile/quiz-attemts')
+            return response.data
         }
     }
 }
