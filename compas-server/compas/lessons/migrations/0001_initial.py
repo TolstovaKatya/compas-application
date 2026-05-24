@@ -69,7 +69,7 @@ class Migration(migrations.Migration):
                 ('title', models.TextField(blank=True, null=True)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('video_url', models.TextField(blank=True, null=True)),
-                ('task_complexity', models.ForeignKey(blank=True, db_column='task_complexity', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.complexity')),
+                ('task_complexity', models.ForeignKey(blank=True, db_column='task_complexity', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.complexity')),
             ],
             options={
                 'db_table': 'lessons',
@@ -81,7 +81,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.TextField(blank=True, null=True)),
-                ('id_lesson', models.ForeignKey(blank=True, db_column='id_lesson', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.lessons')),
+                ('id_lesson', models.ForeignKey(blank=True, db_column='id_lesson', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.lessons')),
             ],
             options={
                 'db_table': 'quizzes',
@@ -93,7 +93,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('question_text', models.TextField(blank=True, null=True)),
-                ('id_quiz', models.ForeignKey(blank=True, db_column='id_quiz', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.quizzes')),
+                ('id_quiz', models.ForeignKey(blank=True, db_column='id_quiz', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.quizzes')),
             ],
             options={
                 'db_table': 'quizz_questions',
@@ -105,8 +105,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('answer_text', models.TextField(blank=True, null=True)),
-                ('is_correct', models.ForeignKey(blank=True, db_column='is_correct', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.answertype')),
-                ('id_quiz_questions', models.ForeignKey(blank=True, db_column='id_quiz_questions', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.quizzquestions')),
+                ('is_correct', models.ForeignKey(blank=True, db_column='is_correct', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.answertype')),
+                ('id_quiz_questions', models.ForeignKey(blank=True, db_column='id_quiz_questions', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.quizzquestions')),
             ],
             options={
                 'db_table': 'question_answers',
@@ -129,7 +129,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('role', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.roles')),
+                ('role', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.roles')),
             ],
             options={
                 'db_table': 'users',
@@ -143,9 +143,9 @@ class Migration(migrations.Migration):
             name='UserLessonProgress',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('id_lesson', models.ForeignKey(blank=True, db_column='id_lesson', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.lessons')),
+                ('id_lesson', models.ForeignKey(blank=True, db_column='id_lesson', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.lessons')),
                 ('id_user', models.ForeignKey(blank=True, db_column='id_user', null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('status', models.ForeignKey(blank=True, db_column='status', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.status')),
+                ('status', models.ForeignKey(blank=True, db_column='status', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.status')),
             ],
             options={
                 'db_table': 'user_lesson_progress',
@@ -158,7 +158,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('max_score', models.IntegerField()),
                 ('score', models.IntegerField()),
-                ('id_quiz', models.ForeignKey(blank=True, db_column='id_quiz', null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.quizzes')),
+                ('id_quiz', models.ForeignKey(blank=True, db_column='id_quiz', null=True, on_delete=django.db.models.deletion.SET_NULL, to='lessons.quizzes')),
                 ('id_user', models.ForeignKey(blank=True, db_column='id_user', null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
             options={

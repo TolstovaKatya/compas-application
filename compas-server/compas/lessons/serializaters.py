@@ -7,7 +7,7 @@ User = get_user_model()
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lessons
-        fields = [ 'id', 'title']
+        fields = [ 'id', 'title', 'task_indexs']
 
 #отображение ответов
 class QuestionAnswersSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class LessonDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lessons
-        fields = [ 'id', 'title', 'description', 'video_url', 'questions']
+        fields = [ 'id', 'title', 'description', 'video_url', 'questions', 'task_indexs']
 
     def get_questions(self, obj):
         test = Quizzes.objects.filter(id_lesson=obj.id).first()

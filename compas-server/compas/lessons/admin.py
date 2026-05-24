@@ -1,4 +1,4 @@
-# catalog/admin.py
+# lessons/admin.py
 from django.contrib import admin
 from django import forms
 from ckeditor.widgets import CKEditorWidget  # виджет rich-text редактора
@@ -66,7 +66,7 @@ class QuizzesInline(nested_admin.NestedStackedInline):
 
 @admin.register(Lessons)
 class LessonsAdmin(nested_admin.NestedModelAdmin):
-    list_display = ['id', 'title', 'task_complexity', 'video_url']
+    list_display = ['id', 'title', 'task_complexity', 'video_url', 'task_indexs']
     search_fields = ['title', 'description']
     list_filter = ['task_complexity']
     form = LessonForm
@@ -78,7 +78,7 @@ class LessonsAdmin(nested_admin.NestedModelAdmin):
             'description': 'Заполните название и описание урока'
         }),
         ('Мультимедиа', {
-            'fields': ('video_url', 'task_complexity'),
+            'fields': ('video_url', 'task_complexity', 'task_indexs'),
             'description': 'URL видео и сложность урока'
         }),
     )
