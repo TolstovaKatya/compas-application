@@ -1,13 +1,22 @@
 <template>
-    <n-config-provider :theme-overrides="themeOverrides">
-        <h1>{{ titleTest }}</h1>
+    <div v-if="loading" class="loading-wrapper">
+        Загрузка теста...
+    </div>
 
+    <n-config-provider :theme-overrides="themeOverrides" v-else>
+        <h1>{{ titleTest }}</h1>
+        
         <div v-if="testComplited">
             <n-card class="test-card">
                 <p class="test-title">Тест пройден! Поздравляем!</p>
                 <div class="test-card-res">
-                    <span>Ваши результаты:</span>
-                    <n-progress type="circle" :percentage="resultValue" :offset-degree="100" class="result"/>
+                    <span class="res">Ваши результаты:</span>
+                    <n-progress 
+                        type="circle" 
+                        :percentage="resultValue" 
+                        :offset-degree="100" 
+                        class="result"
+                    />
                 </div>
 
                 <n-button class="btn" type="primary">
@@ -21,18 +30,11 @@
         <div v-else>
             <div v-if="questions && questions.length > 0">
                 <n-card class="test-card">
-                    <div 
-                        v-for="question in questions"
-                        :key="question.id"
-                    >
-                        <div
-                            v-show="question.id === questionId"
-                            class="question"
-                        >
+                    <div v-for="question in questions" :key="question.id">
+                        <div v-show="question.id === questionId" class="question">
                             {{ question.question_text }}
                         </div>
 
-                        <!--ответы--->
                         <div>
                             <n-card
                                 v-for="answer in currentAnswers"
@@ -45,11 +47,23 @@
                         </div>  
                     </div>
 
-                    <n-alert v-show="sucsess" title="Отличный результат!" type="success" closable class="mistake">
+                    <n-alert 
+                        v-show="sucsess" 
+                        title="Отличный результат!" 
+                        type="success" 
+                        closable 
+                        class="mistake"
+                    >
                         Молодец! Переходим к следующему вопросу!
                     </n-alert>
                     
-                    <n-alert v-show="ifMistake" title="Ошибка" type="error" closable class="mistake">
+                    <n-alert 
+                        v-show="ifMistake" 
+                        title="Ошибка" 
+                        type="error" 
+                        closable 
+                        class="mistake"
+                    >
                         Давай подумаем еще :)
                     </n-alert>
                 </n-card>
@@ -57,7 +71,8 @@
 
             <div v-else-if="questions !== undefined">
                 <n-card class="test-card">
-                    <p class="test-title">К этому уроку нет теста :)</p> <br><br>
+                    <p class="test-title">К этому уроку нет теста :)</p>
+                    <br><br>
                     <n-button class="btn" type="primary">
                         <router-link :to="`/lessons/${lessonId}`" class="back-button">
                             Назад к уроку
@@ -67,7 +82,6 @@
             </div>
             
             <div v-else>
-                <!-- Загрузка -->
                 <n-card class="test-card">Загрузка...</n-card>
             </div>
         </div>
@@ -83,6 +97,8 @@ import createLessonsClient from '@/services/api_lessonns';
 const client = createLessonsClient();
 const route = useRoute();
 
+const loading = ref(true)
+
 const themeOverrides = {
     common: {
         primaryColor: '#00B1FF',
@@ -97,21 +113,21 @@ const themeOverrides = {
         borderFocusPrimary: '#00B1FF 1px solid',
         backgroundColorPrimary: 'none'
     }
-}
+};
 
-const questionId = ref(null)
-const questions = ref(null)
-const selectedAnswerId = ref(null)
-const tryCount = ref(0)
-const lessonId = route.params.id
+const questionId = ref(null);
+const questions = ref(null);
+const selectedAnswerId = ref(null);
+const tryCount = ref(0);
+const lessonId = route.params.id;
 
-const ifMistake = ref(false)
-const sucsess = ref(false)
-const testComplited = ref(false)
-const titleTest = ref('')
+const ifMistake = ref(false);
+const sucsess = ref(false);
+const testComplited = ref(false);
+const titleTest = ref('');
 
-const correctCount = ref(0)
-const wrongAttempts = ref(0)
+const correctCount = ref(0);
+const wrongAttempts = ref(0);
 
 const resultValue = computed(() => {
     if (!questions.value || questions.value.length === 0) return 0;
@@ -133,9 +149,11 @@ const currentAnswers = computed(() => {
 });
 
 const getQuestions = async() => {
+    loading.value = true;
+
     try {
         const response = await client.getTest(lessonId);
-        
+
         if (!response || !response.questions) {
             questions.value = [];
             return;
@@ -150,8 +168,10 @@ const getQuestions = async() => {
     } catch (error) {
         console.error('Ошибка загрузки теста:', error);
         questions.value = [];
+    } finally {
+        loading.value = false;
     }
-}
+};
 
 const goToNextQuestion = () => {
     if (!questions.value) return;
@@ -162,9 +182,9 @@ const goToNextQuestion = () => {
         testComplited.value = true;
     } else {
         questionId.value = questions.value[currentIndex + 1].id;
-        tryCount.value = 0; // сброс попыток для нового вопроса
+        tryCount.value = 0;
     }
-}
+};
 
 const checkAnswer = async(id) => {
     if (!questions.value) return;
@@ -172,12 +192,10 @@ const checkAnswer = async(id) => {
     selectedAnswerId.value = id;
     const answerss = [{ "question_id": questionId.value, "answer_id": id }];
 
-    // определяем, последний ли это вопрос
     const currentIndex = questions.value.findIndex(q => q.id === questionId.value);
     const isLastQuestion = currentIndex === questions.value.length - 1;
 
     try {
-        // отправляем текущие счетчики ДО их обновления в этом запросе
         const response = await client.checkAnswer(
             lessonId,
             answerss,
@@ -186,7 +204,6 @@ const checkAnswer = async(id) => {
             wrongAttempts.value
         );
 
-        // парсим ответ сервера. Ключ может быть строкой или числом
         const questionKey = String(questionId.value);
         const questionResult = response[questionKey] || response[questionId.value];
         
@@ -216,86 +233,125 @@ const checkAnswer = async(id) => {
         console.error('Ошибка проверки ответа:', error);
         alert('Произошла ошибка при проверке ответа');
     }
-}
+};
 
 onMounted(() => {
     getQuestions();
-})
+});
 </script>
 
 <style scoped>
 .test-card {
-    margin: auto;
-    margin-top: 8vh;
-    background-color: black !important;
-    color: white !important;
+    margin: 8vh auto;
+    background: var(--bg-surface) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
     width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .mini-card {
     width: 80%;
     min-height: 50px;
-    margin: auto;
-    margin-top: 1vh;
-    background-color: black !important;
-    color: white !important;
+    margin: 1vh auto;
+    background: var(--bg-surface) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
     box-shadow: none !important;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.25s ease;
+    user-select: none; 
 }
 
 .mini-card:hover {
-    background-color: #1a1a1a !important;
+    background: var(--bg-primary) !important;
+    border-color: var(--accent) !important;
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 177, 255, 0.3);
+}
+
+.mini-card:active {
+    transform: scale(1.0);
+    transition: transform 0.1s ease; 
 }
 
 .question {
     margin-left: 10%;
     margin-bottom: 2vh;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: var(--body);
+    color: var(--text-main);
 }
 
 .mistake {
     width: 80%;
-    margin: auto;
-    margin-top: 2vh;
+    margin: 2vh auto;
 }
 
 h1 {
-    color: #00B1FF;
-    text-shadow: 4px 4px 40px rgba(0, 175, 255, 1);
+    color: var(--accent);
+    text-shadow: 
+        0 0 12px rgba(0, 177, 255, 0.7),
+        0 0 24px rgba(0, 177, 255, 0.5);
     text-align: center;
-    margin-top: 2vh;
-    margin-bottom: 1vh;
+    margin: 2vh 0 1vh;
+    font-size: var(--h2);
+    font-weight: 700;
 }
 
-.test-card-res  {
+.test-card-res {
     display: flex !important;
     flex-direction: column !important;    
     width: 80%;
-    margin: auto;
-    margin-top: 8vh;
-    background-color: black !important;
-    color: white !important;
-    border: #00B1FF 1px solid;
+    margin: 8vh auto;
+    background: var(--bg-primary) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
     text-align: center;
-    padding: 2vw 2vh;
+    padding: 2vh;
+}
+
+.res {
+    font-size: var(--body);
 }
 
 .result {
-    margin: auto;
-    margin-top: 5vh;
+    margin: 5vh auto;
+}
+
+.result :deep(.n-progress-text) {
+    fill: #00B1FF !important;
+    color: #00B1FF !important;
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .btn {
     width: 80% !important;
-    margin: 3vh auto 0 auto !important; 
+    margin: 3vh auto 0 auto !important;
     display: block !important;
+    background: transparent !important;
+    border: 1px solid var(--accent) !important;
+    color: var(--accent) !important;
+    font-weight: 600;
+    border-radius: var(--radius) !important;
+    transition: all 0.25s ease;
+}
+
+.btn:hover {
+    background: var(--accent) !important;
+    color: #fff !important;
+    box-shadow: 0 0 15px rgba(0, 177, 255, 0.5);
 }
 
 .back-button {
     text-decoration: none !important;
-    color: #00B1FF !important;
-    font-weight: bold !important;
+    color: inherit !important;
+    font-weight: 600 !important;
     display: block;
     width: 100%;
     text-align: center;
@@ -305,6 +361,24 @@ h1 {
 .test-title {
     text-align: center;
     margin: auto;
-    font-size: 2em;
+    font-size: var(--h2);
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 
+        0 0 12px rgba(0, 177, 255, 0.7),
+        0 0 24px rgba(0, 177, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+    .test-card {
+        width: 90%;
+        margin: 4vh auto;
+    }
+    .mini-card {
+        width: 90%;
+    }
+    h1, .test-title {
+        font-size: 1.75rem;
+    }
 }
 </style>
