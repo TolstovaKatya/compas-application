@@ -101,19 +101,99 @@ const handleSubmit = async () => {
 } 
 </script>
 
-<style>
+<style scoped>
 .registration-page {
   display: flex;
-  justify-content: center; 
-  align-items: center;   
-  min-height: 100vh;       
-  width: 100%;
-  background-color: #000000; 
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: black;
+  padding-top: 10vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.centered-card.n-card {
-  background-color: #ffffff !important;
-  box-shadow: 4px 4px 40px rgba(0, 175, 255, 1); 
+.centered-card {
+  background: #f8fafc !important;
+  color: #111827 !important;
+  border: 1px solid rgba(0, 177, 255, 0.5) !important;
+  border-radius: 12px !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  
+  /* 🔥 Интенсивное неоновое свечение в спокойном состоянии */
+  box-shadow: 
+    0 0 20px rgba(0, 177, 255, 0.7),
+    0 0 40px rgba(0, 177, 255, 0.4),
+    0 0 60px rgba(0, 177, 255, 0.2) !important;
+    
+  transition: box-shadow 0.3s ease;
 }
 
+.centered-card:hover {
+  /* Убрали transform и оставили то же свечение */
+  box-shadow: 
+    0 0 20px rgba(0, 177, 255, 0.7),
+    0 0 40px rgba(0, 177, 255, 0.4),
+    0 0 60px rgba(0, 177, 255, 0.2) !important;
+}
+
+.centered-card :deep(.n-card-header__title) {
+  color: #00B1FF !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(0, 177, 255, 0.4);
+}
+
+.centered-card :deep(.n-form-item-label) {
+  color: #374151 !important;
+  font-weight: 500;
+}
+
+.centered-card :deep(.n-input) {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #111827 !important;
+}
+
+.centered-card :deep(.n-input:hover),
+.centered-card :deep(.n-input:focus) {
+  border-color: #00B1FF !important;
+  box-shadow: 0 0 0 2px rgba(0, 177, 255, 0.2) !important;
+}
+
+.centered-card :deep(.n-input__placeholder) {
+  color: #9ca3af !important;
+}
+
+.custom-btn {
+  background: #00B1FF !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 8px !important;
+  height: 48px !important;
+  border: none !important;
+  transition: all 0.2s ease;
+}
+
+.custom-btn:hover {
+  background: #009ce0 !important;
+  box-shadow: 0 0 15px rgba(0, 177, 255, 0.5) !important;
+}
+
+a {
+  color: #00B1FF;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+a:hover { 
+  opacity: 0.8; 
+  text-decoration: underline; 
+}
+
+@media (max-width: 480px) {
+  .registration-page { padding-top: 6vh; }
+  .centered-card { max-width: 100% !important; }
+}
 </style>
