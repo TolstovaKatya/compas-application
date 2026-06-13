@@ -4,5 +4,24 @@ body {
   font-family: 'Arimo';
   margin: 0;
   padding: 0;
-  background-color: black;
+  background-color: #0a0a0a;
+}
+
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-surface: #141414;
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+  --accent: #00B1FF;
+  --accent-hover: #009ce0;
+  --border: rgba(0, 177, 255, 0.3);
+  --radius: 10px;
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --font-main: 'Arimo', system-ui, -apple-system, sans-serif;
+  
+  --h1: clamp(1.75rem, 5vw, 2.5rem);
+  --h2: clamp(1.5rem, 4vw, 2rem);
+  --h3: clamp(1.25rem, 3vw, 1.5rem);
+  --body: clamp(0.95rem, 2vw, 1.1rem);
+  --small: 0.875rem;
 }
