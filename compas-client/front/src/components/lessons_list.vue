@@ -1,81 +1,87 @@
 <template>
-    <p class="title">ВВЕДЕНИЕ</p>
-    <div class="lessons">
-        <div class="lessons-columns">
-            <!-- Левая колонка -->
-            <div class="lessons-column">
-                <div 
-                    v-for="lesson in introductionLessonsLeft" 
-                    :key="lesson.id"
-                    class="lessons-list"
-                >
-                    <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
-                        <span class="lesson-number">
-                            УРОК {{ lesson.task_indexs }}.
-                        </span> 
-                        <span class="lesson-title">
-                            {{ lesson.title }}
-                        </span>
-                    </router-link>
+    <div v-if="loading" class="loading-wrapper">
+        Загрузка уроков...
+    </div>
+
+    <div v-else>
+        <p class="title">ВВЕДЕНИЕ</p>
+        <div class="lessons">
+            <div class="lessons-columns">
+                <!-- левая колонка -->
+                <div class="lessons-column">
+                    <div 
+                        v-for="lesson in introductionLessonsLeft" 
+                        :key="lesson.id"
+                        class="lessons-list"
+                    >
+                        <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
+                            <span class="lesson-number">
+                                УРОК {{ lesson.task_indexs }}.
+                            </span> 
+                            <span class="lesson-title">
+                                {{ lesson.title }}
+                            </span>
+                        </router-link>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Правая колонка -->
-            <div class="lessons-column">
-                <div 
-                    v-for="lesson in introductionLessonsRight" 
-                    :key="lesson.id"
-                    class="lessons-list"
-                >
-                    <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
-                        <span class="lesson-number">
-                            УРОК {{ lesson.task_indexs }}.
-                        </span> 
-                        <span class="lesson-title">
-                            {{ lesson.title }}
-                        </span>
-                    </router-link>
+                
+                <!-- правая колонка -->
+                <div class="lessons-column">
+                    <div 
+                        v-for="lesson in introductionLessonsRight" 
+                        :key="lesson.id"
+                        class="lessons-list"
+                    >
+                        <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
+                            <span class="lesson-number">
+                                УРОК {{ lesson.task_indexs }}.
+                            </span> 
+                            <span class="lesson-title">
+                                {{ lesson.title }}
+                            </span>
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <p class="title">ЧЕРЧЕНИЕ</p>
-    <div class="lessons">
-        <div class="lessons-columns">
-            <!-- Левая колонка -->
-            <div class="lessons-column">
-                <div 
-                    v-for="lesson in drawingLessonsLeft" 
-                    :key="lesson.id"
-                    class="lessons-list"
-                >
-                    <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
-                        <span class="lesson-number">
-                            УРОК {{ lesson.task_indexs }}.
-                        </span> 
-                        <span class="lesson-title">
-                            {{ lesson.title }}
-                        </span>
-                    </router-link>
+        <p class="title">ЧЕРЧЕНИЕ</p>
+        <div class="lessons">
+            <div class="lessons-columns">
+                <!-- левая колонка -->
+                <div class="lessons-column">
+                    <div 
+                        v-for="lesson in drawingLessonsLeft" 
+                        :key="lesson.id"
+                        class="lessons-list"
+                    >
+                        <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
+                            <span class="lesson-number">
+                                УРОК {{ lesson.task_indexs }}.
+                            </span> 
+                            <span class="lesson-title">
+                                {{ lesson.title }}
+                            </span>
+                        </router-link>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Правая колонка -->
-            <div class="lessons-column">
-                <div 
-                    v-for="lesson in drawingLessonsRight" 
-                    :key="lesson.id"
-                    class="lessons-list"
-                >
-                    <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
-                        <span class="lesson-number">
-                            УРОК {{ lesson.task_indexs }}.
-                        </span> 
-                        <span class="lesson-title">
-                            {{ lesson.title }}
-                        </span>
-                    </router-link>
+                
+                <!-- правая колонка -->
+                <div class="lessons-column">
+                    <div 
+                        v-for="lesson in drawingLessonsRight" 
+                        :key="lesson.id"
+                        class="lessons-list"
+                    >
+                        <router-link :to="`/lessons/${lesson.id}`" class="lesson-link">
+                            <span class="lesson-number">
+                                УРОК {{ lesson.task_indexs }}.
+                            </span> 
+                            <span class="lesson-title">
+                                {{ lesson.title }}
+                            </span>
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,22 +95,31 @@ import createLessonsClient from '@/services/api_lessonns';
 const lessons = ref([]);
 const client = createLessonsClient();
 
+const loading = ref(true)
+
 const getLessonsList = async() => {
-    const data = await client.getAllLessons();
-    lessons.value = data;
+    loading.value = true;
+    try {
+        const data = await client.getAllLessons();
+        lessons.value = data;
+    } catch (error) {
+        console.log(error)
+    } finally {
+        loading.value = false;
+    }
 };
 
-// Введение: уроки с id < 9
+// введение: уроки с id < 9
 const introductionLessons = computed(() => 
     lessons.value.filter(lesson => lesson.id < 9)
 );
 
-// Черчение: уроки с id > 8
+// черчение: уроки с id > 8
 const drawingLessons = computed(() => 
     lessons.value.filter(lesson => lesson.id > 8)
 );
 
-// Разделяем на левую и правую колонки (первая половина / вторая половина)
+// разделяем на левую и правую колонки 
 const introductionLessonsLeft = computed(() => {
     const mid = Math.ceil(introductionLessons.value.length / 2);
     return introductionLessons.value.slice(0, mid);
@@ -132,57 +147,110 @@ onMounted(() => {
 
 <style scoped>
 .lessons {
-    max-width: 80vw;
-    margin: 0 auto;
-    padding: 10vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4vh 5vw;
 }
 
 .lessons-columns {
-    display: flex;
-    gap: 2vw; /* Расстояние между колонками */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .lessons-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2vh; /* Расстояние между элементами в колонке */
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .lessons-list {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    transition: transform 0.3s, text-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius);
+  transition: background 0.25s, transform 0.25s;
+  cursor: pointer;
 }
 
-.lesson-number {
-    text-decoration: underline;
-    color: #00B1FF;
-    margin-right: 0.5vw;
-    font-size: 1.1em !important;
-}
-
-.lesson-title {
-    text-decoration: none !important;
-    color: #ffffff;
-    font-size: 1.1em !important;
-}
-
-.lesson-number:hover, .lesson-title:hover {
-    text-shadow: 10px 0px 10px rgba(0, 175, 255, 1);
+.lessons-list:hover {
+  background: var(--bg-surface);
+  transform: translateX(6px);
 }
 
 .lesson-link {
-    text-decoration: none !important;
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  width: 100%;
+  flex-wrap: nowrap; 
+}
+
+.lesson-number {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: var(--body);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.lesson-title {
+  color: var(--text-main);
+  font-size: var(--body);
+  font-weight: 500;
+  line-height: 1.4;
+  transition: text-shadow 0.3s ease;
+}
+
+.lessons-list:hover .lesson-number {
+  text-shadow: 
+    0 0 8px rgba(0, 177, 255, 0.9),
+    0 0 18px rgba(0, 177, 255, 0.7),
+    0 0 28px rgba(0, 177, 255, 0.5);
+  color: #00c8ff; 
+}
+
+.lessons-list:hover .lesson-title {
+  text-shadow: 0 0 12px rgba(0, 177, 255, 0.4);
+}
+
+.lesson-link {
+  text-decoration: none;
 }
 
 .title {
-    color: #00B1FF;
-    text-shadow: 4px 4px 50px rgba(0, 175, 255, 1);
-    font-size: 2em;
-    font-weight: bolder;
-    text-align: center;
-    margin-top: 5vh;
+  color: var(--accent);
+  text-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.7),
+    0 0 24px rgba(0, 177, 255, 0.5);
+  font-size: var(--h2);
+  font-weight: 700;
+  text-align: center;
+  margin: 6vh 0 3vh;
+}
+
+.loading-wrapper {
+  text-align: center;
+  font-size: var(--h2);
+  color: var(--accent);
+  text-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.7),
+    0 0 24px rgba(0, 177, 255, 0.5);
+  font-weight: 700;
+}
+
+/* адаптив */
+@media (max-width: 768px) {
+  .lessons-columns {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .title {
+    font-size: 1.75rem;
+    margin: 4vh 0 2vh;
+  }
 }
 </style>
