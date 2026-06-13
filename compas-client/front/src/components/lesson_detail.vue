@@ -1,11 +1,16 @@
 <template>
     <n-config-provider :theme-overrides="themeOverrides">
         <n-card class="lesson-conteiner">
-            <div v-if="lesson" class="lesson-card">
+
+            <div v-if="loading" class="loading-wrapper">
+              Загрузка урока...
+            </div>
+
+            <div v-else-if="lesson" class="lesson-card">
                 
                 <div class="content-wrapper">
                     
-                    <!-- Кнопка "Назад" -->
+                    <!-- кнопка назад -->
                     <n-button class="btn" type="primary">
                         <router-link to="/lessons" class="back-button">
                             Назад к урокам
@@ -15,12 +20,12 @@
                     <div class="lesson-id">УРОК {{ lesson.task_indexs }}</div>
                     <h1 class="lesson-name">{{ lesson.title }}</h1>
                     
-                    <!-- Описание урока -->
+                    <!-- оеписане урока -->
                     <div class="lesson-description" v-if="lesson.description">
                         <div v-html="lesson.description"></div>
                     </div>
                     
-                    <!-- Видео -->
+                    <!-- видео -->
                     <div class="lesson-video" v-if="lessonVideo">
                         <span class="video-title">ВИДЕОУРОК</span>
                         <iframe
@@ -32,7 +37,7 @@
                         </iframe>
                     </div>
 
-                    <!-- Кнопка "К тесту" -->
+                    <!-- кнопка к тесту -->
                     <n-button class="btn" type="primary">
                         <router-link :to="`/lessons/${lesson.id}/test`" class="back-button">
                             Перейти к тесту
@@ -51,13 +56,15 @@ import { useRoute } from 'vue-router';
 import { NCard, NButton, NConfigProvider } from 'naive-ui';
 import createLessonsClient from '@/services/api_lessonns';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const API_URL = import.meta.env.VITE_API;
 
 const route = useRoute();
 const client = createLessonsClient();
 
 const lesson = ref(null);
 const lessonVideo = ref();
+
+const loading = ref(true)
 
 const themeOverrides = {
     Button: {
@@ -78,6 +85,8 @@ const fixMediaUrls = (html) => {
 };
 
 const getLessonDetail = async () => {
+    loading.value = true; 
+
     try {
         const lessonId = route.params.id;
         const data = await client.lessonDetail(lessonId);
@@ -96,6 +105,8 @@ const getLessonDetail = async () => {
     } catch (error) {
         console.error('Ошибка загрузки урока:', error);
         lesson.value = null;
+    } finally {
+        loading.value = false;
     }
 };
 
@@ -106,85 +117,132 @@ onMounted(() => {
 
 <style scoped>
 .lesson-conteiner {
-    display: flex;
-    justify-content: center; 
-    margin: 10vh auto;
-    width: 100%;
-    background-color: black !important;
-    border: none !important;
-    box-shadow: none !important;
+  display: flex;
+  justify-content: center; 
+  margin: 10vh auto;
+  width: 100%;
+  background: var(--bg-primary) !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .lesson-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 100%;
 }
 
 .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 80%; 
-    gap: 3vh;
+  display: flex;
+  flex-direction: column;
+  width: 80%; 
+  margin: 0 auto;
+  gap: 3vh;
 }
 
 .btn {
-    align-self: flex-start; 
-    margin: 0;
+  align-self: flex-start; 
+  background: transparent !important;
+  border: 1px solid var(--accent) !important;
+  color: var(--accent) !important;
+  font-weight: 600;
+  font-size: var(--body) !important; 
+  padding: 1rem 2.5rem !important; 
+  border-radius: var(--radius) !important;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  box-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.5),
+    0 0 24px rgba(0, 177, 255, 0.3);
+  transform: scale(2px);
 }
 
 .back-button {
-    text-decoration: none !important;
-    color: #00B1FF !important;
-    font-weight: bold !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  font-weight: 600 !important;
+  font-size: var(--body);
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .lesson-id {
-    color: #00B1FF;
-    text-shadow: 4px 4px 50px rgba(0, 175, 255, 1);
-    font-size: 2em;
-    font-weight: bolder;
-    text-align: center;
+  color: var(--accent);
+  text-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.7),
+    0 0 24px rgba(0, 177, 255, 0.5);
+  font-size: var(--h2);
+  font-weight: 700;
+  text-align: center;
 }
 
 .lesson-name {
-    color: white;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 0;
+  color: var(--text-main);
+  font-size: var(--h2);
+  text-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.7),
+    0 0 24px rgba(0, 177, 255, 0.5);
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
 }
 
 .lesson-description {
-    color: #fff;
-    font-size: 1.1em;
-    margin: auto;
+  color: var(--text-main);
+  font-size: var(--body);
+  line-height: 1.6;
 }
 
 .lesson-video {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5vh;
 }
 
 .video {
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    border-radius: 8px;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .video-title {
-    font-size: 1.3em;
-    color: #00B1FF;
-    font-weight: bold;
-    margin-bottom: 1.5vh;
-    text-align: center;
+  font-size: var(--h2);
+  color: var(--accent);
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.7),
+    0 0 24px rgba(0, 177, 255, 0.5);
 }
 
-/* .lesson-img {
-    display: block;
-    margin: 0 auto;
-} */
+.loading-wrapper {
+  text-align: center;
+  font-size: var(--h2);
+  color: var(--accent);
+  text-shadow: 
+    0 0 12px rgba(0, 177, 255, 0.7),
+    0 0 24px rgba(0, 177, 255, 0.5);
+  font-weight: 700;
+}
 
 
+/* адаптив */
+@media (max-width: 768px) {
+  .content-wrapper { 
+    width: 90%; 
+    gap: 2vh; 
+  }
+  .btn {
+    padding: 0.85rem 2rem !important; 
+    font-size: 1rem !important;
+  }
+}
 </style>
