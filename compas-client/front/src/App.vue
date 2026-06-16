@@ -11,6 +11,18 @@ const lastScrollY = ref(0)
 
 const isAutentificated = computed(() => !!localStorage.getItem('access_token'))
 
+const isMobileMenuOpen = ref(false)
+const isMobile = ref(false)
+
+const checkScreen = () => {
+  isMobile.value = window.innerWidth <= 768
+  if (!isMobile.value) isMobileMenuOpen.value = false 
+}
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+}
+
 const handleScroll = () => {
   const currentScrollY = window.scrollY
 
@@ -31,6 +43,7 @@ const handleScroll = () => {
 
 const scrollToSection = (e, sectionId) => {
   e.preventDefault(); 
+  closeMobileMenu()
   
   if (window.location.pathname !== '/') {
     router.push('/').then(() => {
@@ -250,6 +263,8 @@ const menuOptions = computed(() => {
 const activeKey = ref(null);
 
 onMounted(() => {
+  checkScreen()
+  window.addEventListener('resize', checkScreen)
   window.addEventListener('scroll', handleScroll)
   username.value = localStorage.getItem('username')
 })
@@ -261,12 +276,26 @@ onUnmounted(() => {
 
 <template>
   <n-menu
-    class="custom-menu"
+    class="custom-menu desktop-menu"
     :class="{ 'menu-hidden': !isMenu }"
     v-model:value="activeKey"
     mode="horizontal"
     :options="menuOptions"
   />
+
+  <button v-if="isMobile" class="burger-btn" :class="{ 'menu-hidden': !isMenu }" @click="isMobileMenuOpen = !isMobileMenuOpen" aria-label="Открыть меню">
+    {{ isMobileMenuOpen ? '✕' : '☰' }}
+  </button>
+
+  <div v-if="isMobile && isMobileMenuOpen" class="mobile-dropdown" :class="{ 'menu-hidden': !isMenu }">
+    <n-menu
+      v-model:value="activeKey"
+      mode="vertical"
+      :options="menuOptions"
+      @update:value="closeMobileMenu"
+    />
+  </div>
+
   <router-view />
 </template>
 
@@ -286,7 +315,7 @@ body {
   top: 0 !important;
   width: 100% !important;
   height: 10vh !important;  
-  background-color: rgba(0, 0, 0, 0.7) !important;
+  background-color: var(--bg-primary) !important;
   z-index: 1000 !important;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
   border: 1px solid !important;
@@ -312,6 +341,8 @@ body {
   justify-content: center !important;
   margin: 0 0 !important;
   padding: auto !important;
+  font-size: var(--body);
+  text-transform: uppercase;
 }
 
 .custom-menu.n-menu .n-menu-item-content {
@@ -326,6 +357,69 @@ body {
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
+}
+
+.burger-btn {
+  position: fixed;
+  top: 2vh; 
+  right: 5vw;
+  height: 10vh; 
+  width: 40px;
+  border: none;
+  color: var(--accent); 
+  font-size: var(--body);
+  background: var(--bg-primary);
+  z-index: 1002;
+  display: none; 
+  align-items: center; 
+  justify-content: center;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.burger-btn.menu-hidden {
+  transform: translateY(-100%);
+  opacity: 0; pointer-events: none;
+}
+
+.mobile-dropdown {
+  position: fixed;
+  top: 10vh; left: 0;
+  width: 100%;
+  background: rgba(10, 10, 10, 0.8);
+  z-index: 1001;
+  max-height: calc(100vh - 10vh);
+  overflow-y: auto;
+  border-bottom: 1px solid rgba(0, 177, 255, 0.3);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.mobile-dropdown.menu-hidden {
+  transform: translateY(-100%);
+  opacity: 0; 
+  pointer-events: none;
+}
+
+.mobile-dropdown .n-menu { 
+  background: transparent !important; 
+  border: none !important; 
+}
+
+.mobile-dropdown .n-menu-item-content {
+  font-size: var(--body) !important; 
+  text-transform: uppercase !important; 
+  color: #fff !important;
+  padding: 1.2rem 5vw !important; 
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  justify-content: flex-start !important; 
+}
+
+.custom-menu.menu-hidden {
+  transform: translateY(-100%);
+  opacity: 0; pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-menu { display: none !important; }
+  .burger-btn { display: flex !important; }
 }
 
 #app {

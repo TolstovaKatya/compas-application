@@ -1,532 +1,529 @@
 <template>
+  <div class="logo">
+    <span class="white-text">компас</span>
+    <span class="blue-text">3D</span>
+  </div>
 
-
-    <div class="logo">
-        <span class="white-text">компас</span>
-        <span class="blue-text">3D</span>
+  <div class="hero-section">
+    <div class="hero-text">
+      <div class="tagline">создание</div>
+      <div class="tagline">трехмерных моделей</div>
+      <div class="tagline">
+        <span class="blue-text">легче,</span> чем ты думаешь
+      </div>
     </div>
 
-    <div class="img">
-        <img src="../assets/images/photo_2025-09-27_23-51-10 1.png" alt="изображение на главной"/>
+    <div class="hero-model">
+      <Model 
+        model-url="../../public/models/robobit_-_dex.glb" 
+        :rotation-speed="0.04"
+        :auto-rotate="true"
+        class="model-component"
+      />
     </div>
 
-    <div class="text-main" style="width: 1001px; height: 207px; position: relative">
-        <div style="left: 394px; top: 0px; position: absolute; color: white; font-size: 48px; font-family: Arimo; font-weight: 400; text-transform: uppercase; word-wrap: break-word">создание</div>
-        <div style="left: 0px; top: 76px; position: absolute; color: white; font-size: 48px; font-family: Arimo; font-weight: 400; text-transform: uppercase; word-wrap: break-word">трехмерных моделей</div>
-        <div style="left: 374px; top: 152px; position: absolute"><span style="color: #00B1FF; font-size: 48px; font-family: Arimo; font-weight: 400; text-transform: uppercase; word-wrap: break-word">легче,</span><span style="color: white; font-size: 48px; font-family: Arimo; font-weight: 400; text-transform: uppercase; word-wrap: break-word"> чем ты думаешь</span></div>
+    <div class="hero-image-mobile">
+    <img 
+      src="../assets/images/photo_2025-09-27_23-51-10 1.png" 
+      alt="3D модель Компас-3D"
+      class="mobile-hero-img"
+    />
+  </div>
+  </div>
+
+  <div class="first-block" id="first-block">
+    <div class="title">
+      <span class="white-text">что такое</span>
+      <span class="blue-text">компас 3d?</span>
+    </div>
+    <div class="first-block-content">
+      <div class="line vertical"></div>
+      <div class="line horizontal"></div>
+
+      <div class="first-block-text">
+        <span class="blue-text-first">КОМПАС-3D</span>
+        <span class="white-text-first">
+          - это полнофункциональная российская система автоматизированного проектирования, предназначенная для создания
+          трехмерных моделей, комплексной разработки конструкторской документации и чертежей.<br><br>
+          Это основное программное обеспечение для тысяч инженеров в машиностроении, приборостроении, авиа- и
+          судостроении, а также идеальный инструмент для обучения и домашнего использования.
+        </span>
+      </div>
+
+      <div class="first-block-img-wrapper">
+        <img src="../assets/images/photo_2025-09-13_22-37-51 1.png" alt="второе изображение">
+      </div>
+    </div>
+  </div>
+
+  <div class="second-block" id="second-block">
+    <div class="title">
+      <span class="white-text">чему я</span>
+      <span class="blue-text">научусь?</span>
+    </div>
+    <div class="second-block-content">
+      <div class="second-block-text">
+        <span class="white-text">
+          Мечтаешь создавать 3D-модели как профессионал? На нашем сайте ты освоишь главный инструмент российских
+          конструкторов -
+        </span>
+        <span class="blue-text">КОМПАС-3D</span><br><br>
+        <span class="white-text">
+          Наши пошаговые уроки и практические задания превратят тебя из новичка в уверенного пользователя. Забудь про
+          скучные лекции — здесь только актуальные и нужные навыки для учебы и карьеры.
+        </span><br><br>
+        <span class="blue-text">Время творить!</span>
+      </div>
+
+      <n-carousel autoplay class="custom-carousel">
+        <div class="carousel-slide column">
+          <img class="carousel-img" :src="img" />
+          <div class="carousel-caption-bottom">Модель робота</div>
+        </div>
+        <div class="carousel-slide column">
+          <img class="carousel-img" :src="img1" />
+          <div class="carousel-caption-bottom">Модель советского тяжёлого штурмового танка КВ-2</div>
+        </div>
+        <div class="carousel-slide column">
+          <img class="carousel-img" :src="img3" />
+          <div class="carousel-caption-bottom">Модель самолета АН-2</div>
+        </div>
+      </n-carousel>
+    </div>
+  </div>  
+
+  <div class="third-block" id="third-block">
+    <div class="title">
+      <span class="white-text">из чего состоит</span>
+      <span class="blue-text">курс?</span>
     </div>
 
-    <div class="first-block" id="first-block">
-        <div class="title">
-            <span class="white-text">что такое</span>
-            <span class="blue-text">компас 3d?</span>
-        </div>
-        <div class="first-block-content">
-            <div class="line" style="width: 1px; height: 456px; background-color: white; top: 28px; left: -23px"></div>
-            <div class="line" style="width: 596px; height: 1px; background-color: white; top: 440px; left: -50px"></div>
+    <div class="third-block-content">
+      <span class="center-text">курс поделен на 2 основные части:</span>
 
-            <div class="first-block-text">
-                <span class="blue-text">КОМПАС-3D</span>
-                <span class="white-text">
-                    - это полнофункциональная российская система автоматизированного проектирования, предназначенная для создания трехмерных моделей, комплексной разработки конструкторской документации и чертежей.<br>
-                    <br>
-                    Это основное программное обеспечение для тысяч инженеров в машиностроении, приборостроении, авиа- и судостроении, а также идеальный инструмент для обучения и домашнего использования.
-                </span>
-            </div>
-            <span>
-                <img src="../assets/images/photo_2025-09-13_22-37-51 1.png" alt="второе изображениие">
-            </span>
+      <div class="columns-wrapper">
+        <div class="third-column third-left">
+          <span class="main-text">основная</span>
+          <span class="sub-text">
+            Ты научишься создавать базовые чертежи, полностью освоишь программу и ее функционал.
+            <br><br>
+            Количество уроков: <span class="blue-text">XX</span>
+          </span>
         </div>
+
+        <div class="third-column third-right">
+          <span class="main-text">усложненная</span>
+          <span class="sub-text">
+            Освоив базу, ты приступишь к созданию своей собственной трехмерной модели. Тебе будет предложено на выбор
+            два варианта моделей.
+            <br><br>
+            Количество уроков: <span class="blue-text">XX</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="fourth-block">
+    <div class="title">
+      <span class="white-text-fourth">ТРЕХМЕРНЫЕ<br>МОДЕЛИ,</span>
+      <span class="white-text">КОТОРЫЕ</span>
+      <span class="blue-text">ТЫ СМОЖЕШЬ</span>
+      <span class="white-text">СДЕЛАТЬ</span>
     </div>
 
-    <div class="second-block" id="second-block">
-        <div class="title">
-            <span class="white-text">чему я</span>
-            <span class="blue-text">научусь?</span>
-        </div>
-        <div class="second-block-content">
-            <div class="second-block-text">
-                <span class="white-text">
-                    Мечтаешь создавать 3D-модели как профессионал? На нашем сайте ты освоишь главный инструмент российских конструкторов - 
-                </span>
-                <span class="blue-text">КОМПАС-3D</span><br><br>
-                <span class="white-text">
-                    Наши пошаговые уроки и практические задания превратят тебя из новичка в уверенного пользователя. Забудь про скучные лекции — здесь только актуальные и нужные навыки для учебы и карьеры.
-                </span><br><br>
-                <span class="blue-text">Время творить!</span>
-            </div>
+    <div class="fourth-block-content">
+      <div class="card-item">
+        <n-card hoverable class="model-card">
+          <n-image :src="img" style="margin: 0 auto; display: block;" />
+          <span class="card-title">МОДЕЛЬ МАШИНЫ</span>
+          <n-button round color="#FFFFFF" text-color="#1D1D1B" class="view-btn">
+            Посмотреть
+          </n-button>
+        </n-card>
+      </div>
 
-
-            <n-carousel autoplay>
-                <div class="carousel-slide column">
-                    <img
-                    class="carousel-img"
-                    :src="img"
-                    >
-                    <div class="carousel-caption-bottom">Модель робота</div>
-                </div>
-
-                <div class="carousel-slide column">
-                    <img
-                    class="carousel-img"
-                    :src="img1"
-                    >
-                    <div class="carousel-caption-bottom">Модель советского тяжёлого штурмового танка КВ-2</div>
-                </div>
-
-                <div class="carousel-slide column">
-                    <img
-                    class="carousel-img"
-                    :src="img2"
-                    >
-                    <div class="carousel-caption-bottom">Модель автомобиля ЗИС-5В</div>
-                </div>
-
-                <div class="carousel-slide column">
-                    <img
-                    class="carousel-img"
-                    :src="img3"
-                    >
-                    <div class="carousel-caption-bottom">Модель самолета  АН-2 </div>
-                </div>
-            </n-carousel>
-
-            <!-- <div class="carousel-container">
-                <div class="carousel">
-                    <button class="carousel-btn-prev" @click="prevSlide" :disabled="currentIndex === 0">
-                        <img src="../assets/images/prevButton.png" alt="">
-                    </button> 
-                    <div class="carousel-viewport">
-                        <div class="carousel-track" :style="{ transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`}">
-                            <div class="carousel-slide" v-for="(slide, index) in slides" :key="index">
-                                <div class="carousel-card">
-                                    <div class="line" style="width: 1px; height: 240px; background-color: white; left: 0; top: 50%; transform: translateY(-50%);"></div>
-                                    <div class="line" style="width: 1px; height: 240px; background-color: white; right: 0; top: 50%; transform: translateY(-50%)"></div>
-                                    <div class="line" style="width: 348px; height: 1px; background-color: white; top: 0; left: 50%; transform: translateX(-50%);"></div>
-                                    <div class="line" style="width: 348px; height: 1px; background-color: white; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
-                                    <img :src="slide.image" :alt="slide.title">
-                                    <span class="slide-title" style="color: white;">{{ slide.title }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-btn-next" @click="nextSlide" :disabled="currentIndex === maxIndex">
-                        <img src="../assets/images/nextButton.png" alt="">
-                    </button>
-                </div>
-            </div> -->
-        </div>
-    </div>  
-
-    <div class="third-block" id="third-block">
-        <div class="title">
-            <span class="white-text">из чего состоит</span>
-            <span class="blue-text">курс?</span>
-        </div>
-        <div class="third-block-content">
-            <span class="center-text">курс поделен на 2 основные части:</span>
-            <div class="third-left">
-                <span class="main-left-text">
-                    основная
-                </span>
-                <span class="left-text">
-                    Ты научишься создавать базовые 
-                    чертежи, полностью освоишь программу и 
-                    ее функционал
-                    <br><br>
-                    Количесвто уроков:
-                </span>
-            </div>
-
-            <div class="third-right">
-                <span class="main-right-text">
-                    усложненная
-                </span>
-                <span class="right-text">
-                    Освоив базу, ты приступишь к
-                    созданию своей собственной трехмерной
-                    модели. Тебе будет предложено на 
-                    выбор два варинта моделей.
-                    <br><br>
-                    Количество уроков:
-                </span>
-            </div>     
-        </div>
+      <div class="card-item">
+        <n-card hoverable class="model-card">
+          <n-image :src="img1" style="margin: 0 auto; display: block;" />
+          <span class="card-title">МОДЕЛЬ ТАНКА</span>
+          <n-button round color="#FFFFFF" text-color="#1D1D1B" class="view-btn">
+            Посмотреть
+          </n-button>
+        </n-card>
+      </div>
     </div>
-
-    <div class="fourth-block">
-        <div class="title">
-            <span class="white-text-fourth">
-                ТРЕХМЕРНЫЕ<br>
-                МОДЕЛИ,
-            </span>
-            <span class="white-text">
-                КОТОРЫЕ
-            </span>
-            <span class="blue-text">
-                ТЫ СМОЖЕШЬ
-            </span>
-            <span class="white-text">
-                СДЕЛАТЬ
-            </span>
-        </div>
-
-        <div class="fourth-block-content">
-            <div class="fourth-block-first-card">
-                <n-card 
-                hoverable
-                style="display: flex; flex-direction: column; align-items: center;"
-                >
-                    <n-image
-                        :src="img"
-                        style="margin: 0 auto; display: block;"
-                    />
-
-                    <span style="text-align: left; margin-bottom: 2%;">МОДЕЛЬ МАШИНЫ</span>
-
-                    <n-button 
-                        round 
-                        color="#FFFFFF" 
-                        text-color="#1D1D1B"
-                        style="margin-top: 1vh; width: 100%; margin-bottom: 10px;">
-                        Посмотреть
-                    </n-button>
-                </n-card>
-            </div>
-            <div class="fourth-block-second-card">
-                <n-card 
-                hoverable
-                style="display: flex; flex-direction: column; align-items: center;"
-                >
-                    <n-image
-                        :src="img"
-                        style="margin: 0 auto; display: block;"
-                    />
-
-                    <span style="text-align: left; margin-bottom: 2%;">МОДЕЛЬ МАШИНЫ</span>
-
-                    <n-button 
-                        round 
-                        color="#FFFFFF" 
-                        text-color="#1D1D1B"
-                        style="margin-top: 1vh; width: 100%; margin-bottom: 10px;">
-                        Посмотреть
-                    </n-button>
-                </n-card>
-            </div>
-        </div>
-    </div> 
+  </div> 
 </template>
 
 <script setup>
-import {
-    NCard,
-    NImage,
-    NButton,
-    NCarousel
-} from 'naive-ui'
-import { ref, computed } from 'vue'
-import img from '../assets/images/roobot.gif'
-import img1 from '../assets/images/tank.png'
-import img2 from '../assets/images/car.png'
-import img3 from '../assets/images/airplane.png'
-const slides = [
-    { image: img1, title: 'Модель советского тяжёлого штурмового танка КВ-2'},
-    { image: img2, title: 'Модель автомобиля ЗИС-5В'},
-    { image: img3, title: 'Модель самолета АН-2'},
-    { image: img, title: 'робот 4'},
-    { image: img, title: 'робот 5'},
-]
+import { ref, computed } from 'vue';
+import { NCard, NImage, NButton, NCarousel } from 'naive-ui';
+import Model from '@/components/modelForMainPage.vue'; 
 
-const slidesToShow = 3
-const currentIndex = ref(0)
-const maxIndex = computed(() => slides.length - slidesToShow)
-
-const prevSlide = () => {
-    if (currentIndex.value > 0) {
-        currentIndex.value--
-    }
-}
-
-const nextSlide = () => {
-    if (currentIndex.value < maxIndex.value) {
-        currentIndex.value++
-    }
-}
+import img from '../assets/images/roobot.gif';
+import img1 from '../assets/images/tank.png';
+import img2 from '../assets/images/car.png';
+import img3 from '../assets/images/airplane.png';
 </script>
 
 <style scoped>
+:root {
+  --accent: #00B1FF;
+  --accent-hover: #009ce0;
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+  --bg-primary: #000000;
+  --bg-surface: #141414;
+  --border: rgba(0, 177, 255, 0.3);
+  --radius: 10px;
+  
+  --font-main: 'Arimo', system-ui, sans-serif;
+  --h1: clamp(1.75rem, 5vw, 2.5rem); 
+  --h2: clamp(1.5rem, 4vw, 2rem);    
+  --h3: clamp(1.25rem, 3vw, 1.5rem); 
+  --body: clamp(0.95rem, 2vw, 1.1rem); 
+  --small: 0.875rem;
+}
+
 .logo {
-    display: flex;
-    justify-content: center;
-    font-family: 'Arimo';
-    font-weight: bold;
-    text-transform: uppercase;
-    text-shadow: 4px 4px 40px rgba(0, 175, 255, 1);
-    font-size: 100px;
-    gap: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(0, 177, 255, 0.6);
+  margin: 3vh auto 4vh;
+  gap: 0.5rem;
+  width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
-.white-text {
-    color: white;
-    white-space: pre-line;
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0;
+  min-height: 60vh;
+  gap: 1rem;
+  position: relative;
 }
 
-.blue-text {
-    color: #00B1FF;
+.hero-text {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  z-index: 1;
+  margin-left: 100px;
 }
 
-@media (max-width: 768px) {
-    .logo {
-        font-size: 40px;
-    }
+.tagline {
+  font-size: var(--h1); 
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--text-main);
+  text-align: left;
 }
 
-.img {
-    width: 654px; 
-    height: 362px;
-    margin: 21px 0px 0px 112px;
+.tagline .blue-text {
+  color: var(--accent);
+  text-shadow: 0 0 15px rgba(0, 177, 255, 0.5);
 }
 
-.text-main {
-    margin: 31px 0px 0px 374px;
+.hero-model {
+  flex: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  position: relative;
+  margin-top: -10vh;
+  overflow: visible;
 }
+
+.model-component {
+  width: 100%;
+  max-width: 900px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.white-text { color: var(--text-main) !important; }
+.blue-text { color: var(--accent) !important; }
+.white-text-fourth { color: var(--text-main); white-space: pre-wrap; font-size: var(--small); text-align: left; align-items: center;}
+
+.white-text-first{ color: var(--text-main) !important; font-family: var(--body);}
+.blue-text-first{ color: var(--accent) !important; font-family: var(--body);}
+
 
 .title {
-    display: flex;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 48px;
-    gap: 15px;
-    text-shadow: 4px 4px 40px rgba(0, 175, 255, 1);
-    margin-top: 233px;
+  font-size: var(--h1); 
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 6vh 0 3vh;
+  text-shadow: 0 0 15px rgba(0, 177, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.firs-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.first-block-text {
-    max-width: 594px;
-    text-align: left;
-    margin-left: 174px;
-    margin: 0px 133px 0px 0px;
-    font-size: 24px;
+.first-block {
+  padding: 4vh 5vw;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .first-block-content {
-    display: flex;
-    position: relative;
-    margin: 79px auto 0px auto;
-    max-width: 1060px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
 }
 
-.line {
-    position: absolute;
+.first-block-text {
+  font-size: var(--body);
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+
+.first-block-img-wrapper img {
+  width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 177, 255, 0.2);
+}
+
+.line { display: none; }
+
+.second-block {
+  padding: 4vh 5vw;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .second-block-text {
-    max-width: 989px;
-    font-size: 24px;
-    text-align: center;
-    margin: 56px auto 56px auto;
-}
-
-.carousel-container {
-    width: 91%;
-    margin: 0 auto 0 auto;
-}
-
-.carousel {
-    position: relative;
-    overflow: hidden;
-}
-
-.n-carousel {
-    width: 70vw;
-    margin: 0 auto 0 auto;
-    padding: 0 0 5vh 0;
-}
-
-.carousel-caption-bottom {
-  color: #ffffff;
+  font-size: var(--body) !important; 
   text-align: center;
-  font-size: 13px;
+  max-width: 900px;
+  margin: 0 auto 3vh;
+  color: var(--text-main);
+}
+
+
+.second-block-text .white-text,
+.second-block-text .blue-text {
+  font-size: inherit;
+}
+
+.custom-carousel {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .carousel-img {
-  width: auto;
-  height: 240px;
+  width: 100%;
+  height: 300px;
   object-fit: cover;
-  margin: 0 auto 0vh auto;
 }
 
-.carousel-viewport {
-    width: 87%;
-    height: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    margin: 0 auto 0 auto;
+.carousel-caption-bottom {
+  padding: 2rem;
+  text-align: center;
+  color: #aaa;
+  font-size: var(--body); 
 }
 
-.carousel-card {
-    position: relative;
-    width: 70%;
-    height: 100%;
-    margin: 0 2%;
-}
-
-
-.carousel-track {
-    display: flex;
-    transition: transform 0.4s ease;
-}
-
-/* .carousel-slide {
-    min-width: calc(100% / 3);
-    box-sizing: border-box;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.carousel-slide img {
-    max-width: 305px;
-    height: 167px;
-    object-fit: cover;
-    display: block;
-    margin: auto;
-} */
-
-.slide-title {
-    display: block;
-    font-size: 16px;
-    padding-left: 35px;
-    padding-bottom: 27px;
-    max-width: 219px;
-}
-
-.carousel-btn-prev {
-    background-color: black;
-    width: 40px;
-    height: 36px;
-    border: none;
-    position: absolute;
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    transform: translateX(50%);
-    top: 50%;
-    z-index: 10;
-    left: 0;
-}
-
-.carousel-btn-next {
-    background-color: black;
-    width: 40px;
-    height: 36px;
-    border: none;
-    position: absolute;
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    transform: translateX(-50%);
-    top: 50%;
-    z-index: 10;
-    right: 0;
+.third-block {
+  padding: 4vh 5vw;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .third-block-content {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .center-text {
-    font-size: 24px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    color: white;
-    margin-top: 44px;
-    text-transform: uppercase;
+  font-size: var(--h3); 
+  margin-bottom: 3rem;
+  color: var(--text-main);
+  font-weight: 600;
 }
 
-.carousel-slide.column {
+.columns-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.third-column {
+  flex: 1;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 177, 255, 0.2);
 }
 
-.third-left {
-    position: absolute;
-    width: 50vw;
-    max-width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    left: 5%;
-    top: 130px;
+.main-text {
+  color: var(--accent);
+  font-size: var(--h3); 
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
 }
 
-.third-right {
-    position: absolute;
-    width: 50vw;
-    max-width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    right: 2%;
-    top: 130px;
-}
-
-.main-left-text, .main-right-text {
-    width: 100%;
-    text-align: center;
-    color: #00B1FF;
-    text-transform: uppercase;
-    white-space: pre-line;
-    font-size: 32px;
-    font-weight: bold;
-}
-
-.left-text, .right-text {
-    width: 67%;
-    color: white;
-    text-align: center;
-    white-space: pre-line;
-    font-size: 24px;
-    margin-top: 32px;
+.sub-text {
+  color: var(--text-main);
+  font-size: var(--body); 
+  line-height: 1.5;
 }
 
 .fourth-block {
-    position: relative;
-    justify-content: center;
-}
-
-.white-text-fourth {
-    font-size: 24px;
-    color: white;
-    white-space: pre-wrap;
-}
-
-.n-card {
-    margin: 10vh 4vw 10vh 4vw;
-    width: 33vw;
-    background-color: black;
-    color: white;
-
+  padding: 4vh 5vw;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .fourth-block-content {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.card-item {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.model-card {
+  background: #1a1a1a !important;
+  color: white !important;
+  border: 1px solid var(--accent) !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s;
+}
+
+.model-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(0, 177, 255, 0.3);
+}
+
+.card-title {
+  margin: 1rem 0;
+  font-weight: bold;
+  font-size: var(--body); 
+}
+
+.view-btn {
+  width: 100%;
+}
+
+.hero-image-mobile {
+  display: none; 
+}
+
+.mobile-hero-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  box-shadow: 0 0 20px rgba(0, 177, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;          
+    min-height: auto;     
+    justify-content: flex-start; 
+    padding: 2vh 4vw;
+  }
+
+  .hero-text {
+    align-items: center;
+    width: 100%;
+    margin-left: 0; 
+    gap: 0.25rem;    
+    text-align: center;     
+  }
+
+  .tagline {
+    text-align: center;
+  }
+
+  .hero-image-mobile {
     display: flex;
     justify-content: center;
+    margin-top: 0;       
+    padding: 0;
+  }
+
+  .hero-model { 
+    display: none; 
+  }
+
+  .first-block-content { 
+    grid-template-columns: 1fr; 
+  }
+
+  .first-block-img-wrapper {
+    order: -1;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem; 
+  }
+
+  .first-block-img-wrapper img {
+    width: 70%;         
+    max-width: 100%;
+  }
+
+  .columns-wrapper { 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 2rem; 
+  }
+
+  .third-column { 
+    width: 100%; 
+  }
+
+  .white-text-fourth {
+    font-size: var(--h1);
+    text-align: center;
+    
+    /* 👇 Заставляет элемент занять всю ширину строки */
+    flex-basis: 100%; 
+  }
 }
 </style>

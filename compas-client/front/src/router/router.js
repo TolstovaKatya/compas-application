@@ -5,7 +5,7 @@ import Profile from "@/components/profile.vue";
 import Registration from "@/components/registration.vue";
 import Lessonslist from "@/components/lessons_list.vue";
 import LessonDetail from "@/components/lesson_detail.vue";
-import Test from '@/components/test.vue'
+import Test from '@/components/test.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_API),
