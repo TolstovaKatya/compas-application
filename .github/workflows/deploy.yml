@@ -3,7 +3,6 @@ name: Deploy Vue Frontend to GitHub Pages
 on:
   push:
     branches: [ main ]
-    paths: ['compas-client/front/**']
 
 
 permissions:
