@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
+  base: process.env.NODE_ENV === 'production' ? '/compas-application/' : '/',,
   plugins: [
     vue(),
     vueDevTools(),
