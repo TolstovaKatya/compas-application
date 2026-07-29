@@ -1,0 +1,67 @@
+services:
+  database:
+    container_name: compas-database
+    image: postgres:15-alpine
+    networks: 
+      - compas-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    restart: always
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/backend/Dockerfile
+    command: gunicorn --bind 0.0.0.0:8000 compas.compas.wsgi:application
+    networks: 
+      - compas-network
+    container_name: compas-backend
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    expose:
+      - "8000"
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: database
+      DB_PORT: 5432
+      DEBUG: "False"
+      SECRET_KEY: ${DJANGO_SECRET_KEY}
+      ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+      DJANGO_SETTINGS_MODULE: compas.compas.settings
+    restart: always
+    depends_on:
+      - database
+
+  frontend:
+    build: 
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+     - "80:80"
+    networks: 
+      - compas-network
+    container_name: compas-frontend
+    restart: always
+    depends_on:
+      - backend
+
+networks:
+  compas-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
+
+

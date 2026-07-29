@@ -1,4 +1,3 @@
-<!-- src/components/Hero3D.vue -->
 <template>
   <div ref="container" class="hero-3d"></div>
 </template>
@@ -22,11 +21,11 @@ let targetX = 0, targetY = 0;
 const init = () => {
   if (!container.value) return;
 
-  // 🔹 Сцена
+  // сцена
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0a0a0a); // Тёмный фон под ваш дизайн
+  scene.background = new THREE.Color(0x0a0a0a); 
 
-  // 🔹 Камера
+  // камера
   camera = new THREE.PerspectiveCamera(
     45,
     container.value.clientWidth / container.value.clientHeight,
@@ -35,7 +34,7 @@ const init = () => {
   );
   camera.position.z = 5;
 
-  // 🔹 Рендерер
+  // рендерер
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.value.clientWidth, container.value.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -43,11 +42,11 @@ const init = () => {
   renderer.toneMappingExposure = 1.2;
   container.value.appendChild(renderer.domElement);
 
-  // 🔹 Освещение (мягкое, чтобы модель не была чёрной)
+  // освещение 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
   
-  const mainLight = new THREE.DirectionalLight(0x00B1FF, 0.8); // Ваш фирменный синий!
+  const mainLight = new THREE.DirectionalLight(0x00B1FF, 0.8); 
   mainLight.position.set(5, 5, 5);
   scene.add(mainLight);
   
@@ -55,13 +54,13 @@ const init = () => {
   fillLight.position.set(-5, -5, -5);
   scene.add(fillLight);
 
-  // 🔹 Загрузка модели
+  // загрузка модели
   const loader = new GLTFLoader();
   loader.load(
     props.modelUrl,
     (gltf) => {
       model = gltf.scene;
-      model.scale.set(2.25, 2.25, 2.25); // Подгоните под размер вашей модели
+      model.scale.set(2.25, 2.25, 2.25); 
       model.position.y = -0.2;
       scene.add(model);
     },

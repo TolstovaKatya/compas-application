@@ -12,7 +12,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
-from ckeditor_demo.settings import CKEDITOR_CONFIGS
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'width': 'auto',
+        'height': 300,
+        'language': 'ru',
+        'skin': 'moono-lisa',
+    },
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,8 +57,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
 
-    'accounts',
-    'lessons.apps.LessonsConfig',
+    'compas.accounts',
+    'compas.lessons.apps.LessonsConfig',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware'
 ]
 
-ROOT_URLCONF = 'compas.urls'
+ROOT_URLCONF = 'compas.compas.urls'
 
 TEMPLATES = [
     {

@@ -10,8 +10,8 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from lessons.forms import UserRegistrationForm, UserLoginForm
-from lessons.models import Users, Lessons, Quizzes, QuizzQuestions, QuestionAnswers, AnswerType
+from compas.lessons.forms import UserRegistrationForm, UserLoginForm
+from compas.lessons.models import Users, Lessons, Quizzes, QuizzQuestions, QuestionAnswers, AnswerType
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, authentication
