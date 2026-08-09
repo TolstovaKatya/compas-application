@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API
+const API_URL = import.meta.env.VITE_API || 'http://localhost'
 
 const createRegistrationClient = () => {
     const client = axios.create({
