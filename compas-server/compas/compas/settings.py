@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -102,11 +103,11 @@ LOGIN_REDIRECT_URL = '/profile/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'compas',
-        'USER': 'postgres',
-        'PASSWORD': 'adm2005',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ.get('DB_NAME', 'compas'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'database'), 
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 

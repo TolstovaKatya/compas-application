@@ -5,7 +5,7 @@ services:
     networks: 
       - compas-network
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
