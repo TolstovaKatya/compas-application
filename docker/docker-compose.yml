@@ -50,8 +50,6 @@ services:
     networks: 
       - compas-network
     container_name: compas-frontend
-    volumes:
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     restart: always
     depends_on:
       - backend
