@@ -1,19 +1,68 @@
-# --- Python / Django  ---
-compas-server/venv/
-compas-server/**/*.pyc
-compas-server/__pycache__/
-compas-server/db.sqlite3
-compas-server/.env
-compas-server/media/
+```
+# Environment files
+.env
+.env.local
+*.env.*
 
-# --- Node / Vue  ---
-compas-client/front/node_modules/
-compas-client/front/dist/
-compas-client/front/.env
-compas-client/front/.env.local
+# Logs
+*.log
 
-# --- IDE ---
-.idea/
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+dist/
+build/
+target/
+.gradle/
+
+# Editors
 .vscode/
+.idea/
 *.swp
+*.swo
+*.tmp
+
+# System
 .DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```

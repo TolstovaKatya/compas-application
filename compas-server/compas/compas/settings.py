@@ -157,9 +157,11 @@ STATIC_ROOT = '/app/static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://localhost:80",
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
 ]
 
 REST_FRAMEWORK = {

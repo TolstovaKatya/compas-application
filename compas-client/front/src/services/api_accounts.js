@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API || 'http://localhost'
+const API_URL = import.meta.env.VITE_API || 'http://localhost:8000'
 
 const createRegistrationClient = () => {
     const client = axios.create({
@@ -14,6 +14,9 @@ const createRegistrationClient = () => {
         const token = localStorage.getItem('access_token');
         if (token) {
             config.headers.Authorization = `Token ${token}`;
+        }
+        if (!config.url.startsWith('/api/') && !config.url.startsWith('http')) {
+            config.url = '/api/' + config.url;
         }
         return config;
     });
