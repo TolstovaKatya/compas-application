@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API || 'http://localhost:8000'
 
 const createRegistrationClient = () => {
     const client = axios.create({
-        baseURL: API_URL,
+        baseURL: '/', 
         headers: {
             'Content-Type': 'application/json'
         }
