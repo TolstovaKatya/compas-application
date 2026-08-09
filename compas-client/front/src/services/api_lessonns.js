@@ -14,9 +14,6 @@ const createLessonsClient = () => {
         if (token) {
             config.headers.Authorization = `Token ${token}`;
         }
-        if (!config.url.startsWith('/api/') && !config.url.startsWith('http')) {
-            config.url = '/api/' + config.url;
-        }
         return config;
     });
 
