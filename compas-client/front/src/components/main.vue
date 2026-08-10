@@ -15,7 +15,7 @@
 
     <div class="hero-model">
       <Model 
-        model-url="../../public/models/robobit_-_dex.glb"  
+        model-url="/models/robobit_-_dex.glb"  
         :rotation-speed="0.04"
         :auto-rotate="true"
         class="model-component"
