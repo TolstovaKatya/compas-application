@@ -8,7 +8,7 @@ import LessonDetail from "@/components/lesson_detail.vue";
 import Test from '@/components/test.vue';
 
 const router = createRouter({
-    history: createWebHistory('/compas-application/'),
+    history: createWebHistory('/'),
     routes: [
         {
             path: '/',
